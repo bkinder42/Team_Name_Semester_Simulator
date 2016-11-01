@@ -1,8 +1,14 @@
 import processing.core.PApplet;
 
 /**
- * Created by bkinder1 on 11/1/16.
+ * * File: MainSimulator
+ * * Author: Ben Kinder
+ * * Date Created: 11/1/16
+ * * Class: COMP 101
+ * * Email: bkinder1@umbc.edu
+ * * Description
  */
+
 public class MainSimulator extends PApplet {
     public static void main(String[] args) {
         PApplet.main("MainSimulator");
