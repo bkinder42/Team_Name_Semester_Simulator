@@ -1,5 +1,8 @@
 import controlP5.*;
 import processing.core.PApplet;
+import processing.core.PFont;
+
+import java.awt.*;
 
 /**
  * * File: TestGUITextInput
@@ -10,8 +13,11 @@ import processing.core.PApplet;
  * * Description
  */
 public class TestGUITextInput extends PApplet {
-    ControlP5 test;
-    String text = "";
+    private ControlP5 test;
+    private String creditHours = "", workHours = "";
+    private Textfield creditHoursField;
+    private Textfield workHoursField;
+    private PFont font;
 
     public static void main(String[] args) {
         PApplet.main("TestGUITextInput");
@@ -22,26 +28,41 @@ public class TestGUITextInput extends PApplet {
     }
 
     public void setup() {
-        background(255);
+        font = createFont("arial", 16);
+        background(128, 0, 128);
         test = new ControlP5(this);
-        test.addTextfield("testField").setPosition(100, 100).setSize(200, 20);
-        test.addButton("button").setSize(100, 20).setPosition(320, 100).setLabel("Return");
+        fill(255);
+        text("Credit Hours: ", 20, 115);
+        creditHoursField = test.addTextfield("creditHours")
+                .setPosition(100, 100)
+                .setSize(200, 20)
+                .setColorBackground(color(255, 255, 255))
+                .setLabelVisible(false)
+                .setLabel("")
+                .setColor(color(0))
+                .setFont(font);
+        text("Work Hours: ", 20, 165);
+        workHoursField = test.addTextfield("workHours")
+                .setPosition(100, 150)
+                .setSize(200, 20)
+                .setColorBackground(color(255, 255, 255))
+                .setLabel("")
+                .setColor(color(0))
+                .setFont(font);
+
+        test.addButton("submit").setSize(50, 20).setPosition(900, 700).setLabel("Submit");
     }
 
     public void draw() {
-        fill(0);
-        text(text, 100, 300);
+        text(creditHours, 400, 115);
+        text(workHours, 400, 165);
     }
 
-    public void keyPressed() {
-        if (key == ENTER) {
-            text = test.get(Textfield.class, "testField").getText();
-        }
-    }
-
-    public void button() {
-        text = test.get(Textfield.class, "testField").getText();
-        test.get(Textfield.class, "testField").clear();
+    public void submit() {
+        creditHours = creditHoursField.getText();
+        creditHoursField.clear();
+        workHours = workHoursField.getText();
+        workHoursField.clear();
     }
 
 
