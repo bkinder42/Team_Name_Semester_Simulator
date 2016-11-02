@@ -25,6 +25,7 @@ public class MainSimulator extends PApplet {
     public void draw() {
         fill(0);
         textSize(32);
-        text("This is a test of Processing in IntelliJ", 200, 400);
+        text("This is a test of Processing in Nothing", 200, 400);
+        text("Eclipse > Processing So Suck It", 200, 450);
     }
 }
