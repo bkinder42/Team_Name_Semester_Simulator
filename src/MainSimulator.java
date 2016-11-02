@@ -15,7 +15,7 @@ public class MainSimulator extends PApplet {
     }
 
     public void settings() {
-        size(1024, 768);
+        size(1029, 768);
     }
 
     public void setup() {
