@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Team Name Semester Simulator:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Team_Name_Semester_Simulator_jar</output-path>
+    <root id="archive" name="Team Name Semester Simulator.jar">
+      <element id="module-output" name="Team Name Semester Simulator" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/core.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
