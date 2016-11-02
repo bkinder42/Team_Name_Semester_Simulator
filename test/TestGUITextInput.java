@@ -62,6 +62,7 @@ public class TestGUITextInput extends PApplet {
 
 	public void draw() {
 		text(creditHours, 400, 115);
+		println("Fun Branch");
 		text(workHours, 400, 165);
 	}
 
