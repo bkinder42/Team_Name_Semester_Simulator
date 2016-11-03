@@ -22,10 +22,6 @@ public class MainSimulator extends PApplet {
     public void eclipseRocks(){
     	System.out.println("InteliJ is the worst");
     }
-    
-    public static void main(String[] args) {
-        PApplet.main("MainSimulator");
-    }
 
     public void settings() {
         size(1024, 768);
@@ -67,9 +63,5 @@ public class MainSimulator extends PApplet {
         creditHoursField.clear();
         workHours = workHoursField.getText();
         workHoursField.clear();
-    }
-
-    public void benMethod() {
-        System.out.println("test2!");
     }
 }
