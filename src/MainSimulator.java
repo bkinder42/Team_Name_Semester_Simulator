@@ -31,6 +31,6 @@ public class MainSimulator extends PApplet {
         textSize(32);
         text("This is a test of Processing in Nothing", 200, 400);
         text("Eclipse > Processing So Suck It", 200, 450);
-        //Testing
+        //Testing Hello
     }
 }
