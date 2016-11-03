@@ -4,4 +4,35 @@
         -UI (Ben)
         -Figure out the math (Aaron)
         -Find images (Adam)
--Extra features (Adam and Andrew)
+-Extra features
+    -SQL (Andrew)
+        -Server creation (Ben)
+    -Special events (Aaron and Adam)
+    -Chat window (Andrew)
+    -Games (Stratego)
+    -Sliders (Ben)
+
+Code architecture
+    -MainSimulator extends PApplet
+        -MainSimulator()
+            -Build frame?
+            -Adds additional non-processing GUI Elements?
+        -main()
+            -Calls processing main
+            -Launch communication server thread
+            -Launch SQL Thread
+        -settings()
+            -specify window size
+        -setup()
+            -creates window
+            -sets initial values
+            -adds static UI elements (text fields, buttons, etc)
+            -first face
+        -draw()
+            -updates the face
+            -Show command line SQL
+        -button action methods
+            -update values when buttons are pressed
+            -Send SQL Queries
+
+Data
