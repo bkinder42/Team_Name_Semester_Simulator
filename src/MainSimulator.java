@@ -2,10 +2,14 @@ import processing.core.PApplet;
 
 /**
  * * File: MainSimulator
- * * Author: Ben Kinder
+ * * Authors: 
+ * 		Ben Kinder
+ * 		Andrew Knox
  * * Date Created: 11/1/16
  * * Class: COMP 101
- * * Email: bkinder1@umbc.edu
+ * * Emails: 
+ * 		Ben: bkinder1@umbc.edu
+ * 		Andrew: andrewk6@umbc.edu/andrew.knox112@gmail.com
  * * Description
  */
 
