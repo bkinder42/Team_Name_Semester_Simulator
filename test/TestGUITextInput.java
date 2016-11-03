@@ -2,8 +2,6 @@ import controlP5.*;
 import processing.core.PApplet;
 import processing.core.PFont;
 
-import java.awt.*;
-
 /**
  * * File: TestGUITextInput
  * * Author: Ben Kinder

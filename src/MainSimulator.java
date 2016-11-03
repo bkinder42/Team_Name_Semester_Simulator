@@ -1,4 +1,7 @@
+import controlP5.ControlP5;
+import controlP5.Textfield;
 import processing.core.PApplet;
+import processing.core.PFont;
 
 /**
  * * File: MainSimulator
@@ -10,8 +13,14 @@ import processing.core.PApplet;
  */
 
 public class MainSimulator extends PApplet {
+    private ControlP5 cp5;
+    private String creditHours = "", workHours = "";
+    private Textfield creditHoursField;
+    private Textfield workHoursField;
+    private PFont font;
+
     public static void main(String[] args) {
-        PApplet.main("MainSimulator");
+        PApplet.main("TestGUITextInput");
     }
 
     public void settings() {
@@ -19,12 +28,40 @@ public class MainSimulator extends PApplet {
     }
 
     public void setup() {
+        font = createFont("arial", 16);
         background(128, 0, 128);
+        cp5 = new ControlP5(this);
+        fill(255);
+        text("Credit Hours: ", 20, 115);
+        creditHoursField = cp5.addTextfield("creditHours")
+                .setPosition(100, 100)
+                .setSize(200, 20)
+                .setColorBackground(color(255, 255, 255))
+                .setLabelVisible(false)
+                .setLabel("")
+                .setColor(color(0))
+                .setFont(font);
+        text("Work Hours: ", 20, 165);
+        workHoursField = cp5.addTextfield("workHours")
+                .setPosition(100, 150)
+                .setSize(200, 20)
+                .setColorBackground(color(255, 255, 255))
+                .setLabel("")
+                .setColor(color(0))
+                .setFont(font);
+
+        cp5.addButton("submit").setSize(50, 20).setPosition(900, 700).setLabel("Submit");
     }
 
     public void draw() {
-        fill(0);
-        textSize(32);
-        text("This is a test of Processing in IntelliJ", 200, 400);
+        text(creditHours, 400, 115);
+        text(workHours, 400, 165);
+    }
+
+    public void submit() {
+        creditHours = creditHoursField.getText();
+        creditHoursField.clear();
+        workHours = workHoursField.getText();
+        workHoursField.clear();
     }
 }
