@@ -19,10 +19,6 @@ public class MainSimulator extends PApplet {
     private Textfield workHoursField;
     private PFont font;
 
-    public void eclipseRocks(){
-    	System.out.println("InteliJ is the worst");
-    }
-
     public void settings() {
         size(1024, 768);
     }

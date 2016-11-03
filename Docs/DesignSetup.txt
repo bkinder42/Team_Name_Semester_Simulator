@@ -1,6 +1,7 @@
 -For the game
     -No class
     -Everything in MainSimulator.java
-    -UI (Ben)
-    -Figure out the math (Aaron)
--Extra features
+        -UI (Ben)
+        -Figure out the math (Aaron)
+        -Find images (Adam)
+-Extra features (Adam and Andrew)
