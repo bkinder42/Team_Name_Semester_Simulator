@@ -20,7 +20,7 @@ public class MainSimulator extends PApplet {
     private PFont font;
 
     public static void main(String[] args) {
-        PApplet.main("TestGUITextInput");
+        PApplet.main("MainSimulator");
     }
 
     public void settings() {
