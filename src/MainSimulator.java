@@ -66,6 +66,6 @@ public class MainSimulator extends PApplet {
     }
 
     public void benMethod() {
-        System.out.println("test!");
+        System.out.println("test2!");
     }
 }
