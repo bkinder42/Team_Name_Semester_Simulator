@@ -64,4 +64,8 @@ public class MainSimulator extends PApplet {
         workHours = workHoursField.getText();
         workHoursField.clear();
     }
+
+    public void benMethod() {
+        System.out.println("test2!");
+    }
 }
