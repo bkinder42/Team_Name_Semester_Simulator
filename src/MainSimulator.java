@@ -18,6 +18,10 @@ public class MainSimulator extends PApplet {
     private Textfield creditHoursField;
     private Textfield workHoursField;
     private PFont font;
+    
+    public static void main(String[]args){
+    	PApplet.main("MainSimulator");
+    }
 
     public void settings() {
         size(1024, 768);
