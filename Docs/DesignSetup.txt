@@ -36,3 +36,69 @@ Code architecture
             -Send SQL Queries
 
 Data
+
+final float BASE_HAPPINESS = 50 // Base happiness, run weekly to populate happyWeekly
+final float BASE_WEALTH = 0 // Base wealth, run weekly to populate wealthWeekly
+final float BASE_GRADE_POTENTIAL = 90 // Base grade potential, run weekly to populate gradeWeekly
+final float HOURS_MAX = 160 // Hours maximum, total of all numbers cannot exceed this
+
+float wealthWeekly // wealth earned weekly, stored after week in wealthTotal
+float wealthTotal // total wealth accrued
+
+float happyWeekly // happiness modifier weekly, stored in happySum after week
+float happySum // stores sum of all happiness modifiers
+float happyAverage // takes average of happySum and produces a number
+
+float gradeWeekly // grade potential modifier, stored in gradeSum after week
+float gradeSum // stores values of weekly grade potentials
+float gradeAverage // averages gradeSum and produces a number
+
+int credits //
+  Amount of credits taken by user, run once
+  Range: 12 - 24
+  Will decrease happyWeekly by 5/4% per credit over 12
+  Will decrease gradeWeekly by 1.5% over after 12 credits
+  Over twelve credits gives flat $1000 to wealthTotal
+
+int jobHours //
+  Weekly selection of work hours, selected by user
+  Range: 0 - 40
+  Up to 20 hours decreases happyWeekly by .5% per hour
+  Over 20 hours decreases happyWeekly amount by 1% per hour
+  gradeWeekly decreases over 20 hours by .5% per hour
+  Gives $5 to wealthWeekly per hour
+  If player achieves $55 in a week, gives flat happyWeekly bonus of 5%
+
+int classTime //
+  Weekly selection of active class time, selected by user
+  Range: 0 - credits
+  Decreases happyWeekly by 1% per hour
+  Increases gradeWeekly by .5% per hour
+
+int studyTime //
+  Weekly selection of amount of time spent studying, selected by user
+  Range: 0 - 2x credits
+  Increases gradeWeekly by .5% per hour
+  Decreases happyWeekly by .5% per hour
+ 
+int academicVisit //
+  Weekly selection of use of academic centers, selected by user
+  Range: 0 - .5x studyTime
+  Increases gradeWeekly by .5% per hour
+  Decreases happyWeekly by .5% per hour
+
+int partyTime //
+  Weekly selection of leisure time, selected by user
+  Range: 0 - (HOURS_MAX - (credits - jobHours - classTime - studyTime - academicVisit))
+  Increases happyWeekly by 3% per hour
+  Decreases gradeWeekly by 3% per hour
+  Decreases wealthWeekly by $7 per hour, if wealthWeekly would be negative, pulls from wealthTotal, if wealthTotal is empty, happyWeekly  = .5%)
+  If no leisure time is taken, gradeWeekly reduced severely (50%)
+
+
+
+
+
+
+
+
