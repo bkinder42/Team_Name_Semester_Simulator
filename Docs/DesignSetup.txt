@@ -53,14 +53,14 @@ float gradeWeekly // grade potential modifier, stored in gradeSum after week
 float gradeSum // stores values of weekly grade potentials
 float gradeAverage // averages gradeSum and produces a number
 
-int credits //
+int creditHours //
   Amount of credits taken by user, run once
   Range: 12 - 24
   Will decrease happyWeekly by 5/4% per credit over 12
   Will decrease gradeWeekly by 1.5% over after 12 credits
   Over twelve credits gives flat $1000 to wealthTotal
 
-int jobHours //
+int workHours //
   Weekly selection of work hours, selected by user
   Range: 0 - 40
   Up to 20 hours decreases happyWeekly by .5% per hour
