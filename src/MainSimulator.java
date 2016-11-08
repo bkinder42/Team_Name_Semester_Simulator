@@ -31,6 +31,7 @@ public class MainSimulator extends PApplet {
             partyTimeField;
     private PFont font;
     private int fieldRow1x, fieldRow2x, textRow1x, textRow2x, weekNum;
+    private String errorText;
     
     public static void main(String[]args){
     	//create your JFrame
@@ -71,6 +72,7 @@ public class MainSimulator extends PApplet {
     }
 
     public void setup() {
+        errorText = "";
         fieldRow1x = 115;
         fieldRow2x = 500;
         textRow1x = 20;
@@ -142,6 +144,7 @@ public class MainSimulator extends PApplet {
         text("Party Time: ", textRow2x, 165);
 
         text("Week Number: " + weekNum, 500, 250);
+        text(errorText, 500, 500);
     }
 
     public void submit() {
@@ -151,6 +154,7 @@ public class MainSimulator extends PApplet {
                 studyTimeField.getIndex() != 0 &&
                 academicVisitField.getIndex() != 0 &&
                 partyTimeField.getIndex() != 0) {
+            errorText = "";
             creditHours = Float.parseFloat(creditHoursField.getText());
             creditHoursField.clear();
             workHours = Float.parseFloat(workHoursField.getText());
@@ -163,18 +167,18 @@ public class MainSimulator extends PApplet {
             academicVisitField.clear();
             partyTime = Float.parseFloat(partyTimeField.getText());
             partyTimeField.clear();
+
+            System.out.println("Credit Hours:\t\t" + creditHours + "\n" +
+                    "Work Hours:\t\t\t" + workHours + "\n" +
+                    "Class Time:\t\t\t" + classTime + "\n" +
+                    "Study Time:\t\t\t" + studyTime + "\n" +
+                    "Academic Visits:\t" + academicVisit + "\n" +
+                    "Party Time:\t\t\t" + partyTime);
+            weekNum++;
         } else {
             System.out.println("Please fill all fields");
+            errorText = "Please fill in all fields before submitting!";
         }
-
-
-        System.out.println("Credit Hours:\t\t" + creditHours + "\n" +
-                "Work Hours:\t\t\t" + workHours + "\n" +
-                "Class Time:\t\t\t" + classTime + "\n" +
-                "Study Time:\t\t\t" + studyTime + "\n" +
-                "Academic Visits:\t" + academicVisit + "\n" +
-                "Party Time:\t\t\t" + partyTime);
-        weekNum++;
     }
     
     public JFrame getFrame(){
