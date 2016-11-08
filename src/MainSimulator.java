@@ -11,6 +11,7 @@ import controlP5.Textfield;
 import processing.awt.PSurfaceAWT.SmoothCanvas;
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.core.PImage;
 import processing.core.PSurface;
 
 /**
@@ -31,7 +32,9 @@ public class MainSimulator extends PApplet {
             partyTimeField;
     private PFont font;
     private int fieldRow1x, fieldRow2x, textRow1x, textRow2x, weekNum;
+    private float brkTestHappy = 96; //int to stand in for happiness until merged with Aaron's code
     private String errorText;
+    PImage happyFace95, haooyFace90, happyFace80;
     
     public static void main(String[]args){
     	//create your JFrame
@@ -69,9 +72,11 @@ public class MainSimulator extends PApplet {
 
     public void settings() {
         size(1024, 768);
+        happyFace95 = requestImage("95percentHappy.png");
     }
 
     public void setup() {
+        settings();
         errorText = "";
         fieldRow1x = 115;
         fieldRow2x = 500;
@@ -79,6 +84,7 @@ public class MainSimulator extends PApplet {
         textRow2x = 390;
         weekNum = 1;
         font = createFont("arial", 16);
+
         background(128, 0, 128);
         cp5 = new ControlP5(this);
         fill(255);
@@ -145,9 +151,14 @@ public class MainSimulator extends PApplet {
 
         text("Week Number: " + weekNum, 500, 250);
         text(errorText, 500, 500);
+        drawFaceImage();
     }
 
-    public void submit() {
+    private void drawFaceImage() {
+        image(happyFace95, 500, 600);
+    }
+
+    private void submit() {
         if (creditHoursField.getIndex() != 0 &&
                 workHoursField.getIndex() !=0 &&
                 classTimeField.getIndex() != 0 &&
