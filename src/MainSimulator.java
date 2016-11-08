@@ -30,7 +30,7 @@ public class MainSimulator extends PApplet {
     private Textfield creditHoursField, workHoursField, classTimeField, studyTimeField, academicVisitField,
             partyTimeField;
     private PFont font;
-    private int fieldRow1x, fieldRow2x, textRow1x, textRow2x;
+    private int fieldRow1x, fieldRow2x, textRow1x, textRow2x, weekNum;
     
     public static void main(String[]args){
     	//create your JFrame
@@ -75,6 +75,7 @@ public class MainSimulator extends PApplet {
         fieldRow2x = 500;
         textRow1x = 20;
         textRow2x = 390;
+        weekNum = 1;
         font = createFont("arial", 16);
         background(128, 0, 128);
         cp5 = new ControlP5(this);
@@ -139,21 +140,33 @@ public class MainSimulator extends PApplet {
         text("Study Time: ", textRow1x, 265);
         text("Academic Visits: ", textRow2x, 115);
         text("Party Time: ", textRow2x, 165);
+
+        text("Week Number: " + weekNum, 500, 250);
     }
 
     public void submit() {
-        creditHours = Float.parseFloat(creditHoursField.getText());
-        creditHoursField.clear();
-        workHours = Float.parseFloat(workHoursField.getText());
-        workHoursField.clear();
-        classTime = Float.parseFloat(classTimeField.getText());
-        classTimeField.clear();
-        studyTime = Float.parseFloat(studyTimeField.getText());
-        studyTimeField.clear();
-        academicVisit = Float.parseFloat(academicVisitField.getText());
-        academicVisitField.clear();
-        partyTime = Float.parseFloat(partyTimeField.getText());
-        partyTimeField.clear();
+        if (creditHoursField.getIndex() != 0 &&
+                workHoursField.getIndex() !=0 &&
+                classTimeField.getIndex() != 0 &&
+                studyTimeField.getIndex() != 0 &&
+                academicVisitField.getIndex() != 0 &&
+                partyTimeField.getIndex() != 0) {
+            creditHours = Float.parseFloat(creditHoursField.getText());
+            creditHoursField.clear();
+            workHours = Float.parseFloat(workHoursField.getText());
+            workHoursField.clear();
+            classTime = Float.parseFloat(classTimeField.getText());
+            classTimeField.clear();
+            studyTime = Float.parseFloat(studyTimeField.getText());
+            studyTimeField.clear();
+            academicVisit = Float.parseFloat(academicVisitField.getText());
+            academicVisitField.clear();
+            partyTime = Float.parseFloat(partyTimeField.getText());
+            partyTimeField.clear();
+        } else {
+            System.out.println("Please fill all fields");
+        }
+
 
         System.out.println("Credit Hours:\t\t" + creditHours + "\n" +
                 "Work Hours:\t\t\t" + workHours + "\n" +
@@ -161,6 +174,7 @@ public class MainSimulator extends PApplet {
                 "Study Time:\t\t\t" + studyTime + "\n" +
                 "Academic Visits:\t" + academicVisit + "\n" +
                 "Party Time:\t\t\t" + partyTime);
+        weekNum++;
     }
     
     public JFrame getFrame(){
