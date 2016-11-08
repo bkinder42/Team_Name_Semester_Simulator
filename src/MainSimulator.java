@@ -24,6 +24,7 @@ import processing.core.PSurface;
  */
 
 public class MainSimulator extends PApplet {
+	private static JFrame gameFrame;
     private ControlP5 cp5;
     private float creditHours, workHours, classTime, studyTime, academicVisit, partyTime;
     private Textfield creditHoursField, workHoursField, classTimeField, studyTimeField, academicVisitField,
@@ -33,7 +34,7 @@ public class MainSimulator extends PApplet {
     
     public static void main(String[]args){
     	//create your JFrame
-        JFrame gameFrame = new JFrame("JFrame Test");
+        gameFrame = new JFrame("JFrame Test");
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //create your sketch
@@ -160,5 +161,9 @@ public class MainSimulator extends PApplet {
                 "Study Time:\t\t\t" + studyTime + "\n" +
                 "Academic Visits:\t" + academicVisit + "\n" +
                 "Party Time:\t\t\t" + partyTime);
+    }
+    
+    public JFrame getFrame(){
+    	return gameFrame;
     }
 }
