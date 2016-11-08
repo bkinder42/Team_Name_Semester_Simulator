@@ -34,6 +34,8 @@ Code architecture
         -button action methods
             -update values when buttons are pressed
             -Send SQL Queries
+    Note: We are not making functions to create buttons, sliders, etc. Instead we are using the controlP5 processing
+        library to create editable text fields and buttons.
 
 Data
 
