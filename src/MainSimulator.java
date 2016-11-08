@@ -15,10 +15,11 @@ import processing.core.PSurface;
 
 /**
  * * File: MainSimulator
- * * Author: Ben Kinder
+ * * Author: Ben Kinder, Andrew Knox
  * * Date Created: 11/1/16
  * * Class: COMP 101
  * * Email: bkinder1@umbc.edu
+ * * Email: andrewk6@umbc.edu
  * * Description
  */
 
