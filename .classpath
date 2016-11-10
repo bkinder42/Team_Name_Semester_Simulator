@@ -5,7 +5,11 @@
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="lib" path="lib/core.jar"/>
 	<classpathentry kind="lib" path="lib/controlP5.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<accessrules>
+			<accessrule kind="accessible" pattern="**/**"/>
+		</accessrules>
+	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Spyro/IdeaProjects/Team_Name_Semester_Simulator/out/production/Team Name Semester Simulator"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

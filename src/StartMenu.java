@@ -1,6 +1,8 @@
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -10,7 +12,7 @@ import java.awt.Color;
 
 public class StartMenu {
 
-	private JFrame frame;
+	private JFrame startMenu;
 	private int opacity;
 
 	/**
@@ -21,7 +23,7 @@ public class StartMenu {
 			public void run() {
 				try {
 					StartMenu window = new StartMenu();
-					window.frame.setVisible(true);
+					window.startMenu.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -42,12 +44,12 @@ public class StartMenu {
 	private void initialize() {
 		opacity = 230;
 		
-		frame = new JFrame();
-		frame.setBounds(100, 100, 741, 617);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		startMenu = new JFrame();
+		startMenu.setBounds(100, 100, 741, 617);
+		startMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		StartMenuPanel contentPane = new StartMenuPanel();
-		contentPane.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-		frame.setContentPane(contentPane);
+		contentPane.setBounds(0, 0, startMenu.getWidth(), startMenu.getHeight());
+		startMenu.setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		TransparentJButton btnStart = new TransparentJButton("Start");
@@ -55,6 +57,13 @@ public class StartMenu {
 		btnStart.setBackground(new Color(btnStart.getBackground().getRed(), btnStart.getBackground().getBlue(),
 				btnStart.getBackground().getGreen(), opacity));
 		btnStart.setBounds(304, 121, 146, 35);
+		btnStart.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				MainSimulator sim = new MainSimulator();
+				sim.run();
+				startMenu.setVisible(false);
+			}
+		});
 		contentPane.add(btnStart);
 		btnStart.repaint();
 
@@ -81,6 +90,11 @@ public class StartMenu {
 		btnExit.setBackground(new Color(btnExit.getBackground().getRed(), btnExit.getBackground().getBlue(),
 				btnExit.getBackground().getGreen(), opacity));
 		btnExit.setBounds(309, 314, 141, 35);
+		btnExit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
 		contentPane.add(btnExit);
 	}
 }
