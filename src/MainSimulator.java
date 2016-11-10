@@ -32,6 +32,39 @@ public class MainSimulator extends PApplet {
     private PFont font;
     private int fieldRow1x, fieldRow2x, textRow1x, textRow2x;
     
+    public static void run(){
+    	//create your JFrame
+        gameFrame = new JFrame("JFrame Test");
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //create your sketch
+        MainSimulator pt = new MainSimulator();
+
+        //get the PSurface from the sketch
+        PSurface ps = pt.initSurface();
+
+        //initialize the PSurface
+        ps.setSize(1024, 768);
+
+        //get the SmoothCanvas that holds the PSurface
+        SmoothCanvas smoothCanvas = (SmoothCanvas)ps.getNative();
+
+        //SmoothCanvas can be used as a Component
+        gameFrame.add(smoothCanvas);
+        
+        //Adds a JPanel to right of processing
+        JPanel panelTest = new JPanel();
+        panelTest.setBackground(Color.white);
+        panelTest.setBounds(1024, 0, 500, 768);
+        gameFrame.add(panelTest);
+
+        //make your JFrame visible
+        gameFrame.setSize(1024 + 500, 768);
+        gameFrame.setVisible(true);
+
+        //start your sketch
+        ps.startThread();
+    }
     public static void main(String[]args){
     	//create your JFrame
         gameFrame = new JFrame("JFrame Test");
