@@ -193,7 +193,7 @@ public class MainSimulator extends PApplet {
                 "Class Time:\t\t\t" + classTime + "\n" +
                 "Study Time:\t\t\t" + studyTime + "\n" +
                 "Academic Visits:\t" + academicVisit + "\n" +
-                "Party Time:\t\t\t" + partyTime);
+                "Leisure Time:\t\t\t" + partyTime);
     }
     
     public JFrame getFrame(){
