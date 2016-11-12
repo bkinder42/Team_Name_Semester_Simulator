@@ -15,7 +15,7 @@ import processing.core.PSurface;
 
 /**
  * * File: MainSimulator
- * * Author: Ben Kinder, Andrew Knox
+ * * Author: Ben Kinder, Andrew Knox, Aaron Wood
  * * Date Created: 11/1/16
  * * Class: COMP 101
  * * Email: bkinder1@umbc.edu
@@ -26,11 +26,20 @@ import processing.core.PSurface;
 public class MainSimulator extends PApplet {
 	private static JFrame gameFrame;
     private ControlP5 cp5;
-    private float creditHours, workHours, classTime, studyTime, academicVisit, partyTime;
+    private float creditHours, workHours, classTime, studyTime, academicVisit, partyTime, wealthWeekly, wealthTotal,
+                                happyWeekly, happySum, happyAverage, gradeWeekly, gradeSum, gradeAverage,
+                                work, study, classt, aca, party, math;
     private Textfield creditHoursField, workHoursField, classTimeField, studyTimeField, academicVisitField,
             partyTimeField;
     private PFont font;
     private int fieldRow1x, fieldRow2x, textRow1x, textRow2x;
+    private final float BASE_HAPPINESS = 50,
+                        BASE_WEALTH = 0,
+                        BASE_GRADE_POTENTIAL = 90,
+                        HOURS_MAX = 160,
+                        MIN_CREDITS = 12,
+                        MAX_CREDITS = 24,
+                        MAX_WORK = 40;
     
     public static void run(){
     	//create your JFrame
@@ -162,6 +171,7 @@ public class MainSimulator extends PApplet {
                 .setFont(font);
 
         cp5.addButton("submit").setSize(50, 20).setPosition(900, 700).setLabel("Submit");
+        cp5.addButton("creditSelect").setSize(50,20).setPosition(330,fieldRow1x-15).setLabel("Credits");
     }
 
     public void draw() {
@@ -174,28 +184,71 @@ public class MainSimulator extends PApplet {
         text("Party Time: ", textRow2x, 165);
     }
 
-    public void submit() {
-        creditHours = Float.parseFloat(creditHoursField.getText());
-        creditHoursField.clear();
-        workHours = Float.parseFloat(workHoursField.getText());
-        workHoursField.clear();
-        classTime = Float.parseFloat(classTimeField.getText());
-        classTimeField.clear();
-        studyTime = Float.parseFloat(studyTimeField.getText());
-        studyTimeField.clear();
-        academicVisit = Float.parseFloat(academicVisitField.getText());
-        academicVisitField.clear();
-        partyTime = Float.parseFloat(partyTimeField.getText());
-        partyTimeField.clear();
-
-        System.out.println("Credit Hours:\t\t" + creditHours + "\n" +
-                "Work Hours:\t\t\t" + workHours + "\n" +
-                "Class Time:\t\t\t" + classTime + "\n" +
-                "Study Time:\t\t\t" + studyTime + "\n" +
-                "Academic Visits:\t" + academicVisit + "\n" +
-                "Leisure Time:\t\t\t" + partyTime);
+    public void weeklyReset(){
+        wealthWeekly = 0;
+        happyWeekly = BASE_HAPPINESS;
+        gradeWeekly = BASE_GRADE_POTENTIAL;
     }
-    
+
+    public void matheWereDeclared(){
+        happyWeekly = happyWeekly;
+    }
+    public void mathWereDeclaredAgain(){
+        happySum += happyWeekly;
+        wealthTotal += wealthWeekly;
+        gradeSum += gradeWeekly;
+
+    }
+    private boolean numberCheck() {
+
+        math = (HOURS_MAX - creditHours - work - classt - study - aca);
+        work = Float.parseFloat(workHoursField.getText());
+        classt = Float.parseFloat(classTimeField.getText());
+        aca = Float.parseFloat(academicVisitField.getText());
+        party = Float.parseFloat(partyTimeField.getText());
+
+        if ((work >= 0 && work <= MAX_WORK) &&
+                (classt >= 0 && classt <= MAX_CREDITS) &&
+                (study >= 0 && study <= (2*creditHours)) &&
+                (aca >= 0 && aca <= (.5*study)) &&
+                (party >= 0 && party <= math)) {
+            return true;
+        } else return false;
+    }
+
+    public void creditSelect() {
+        float cred = Float.parseFloat(creditHoursField.getText());
+        if (cred >= MIN_CREDITS && cred <= MAX_CREDITS) {
+            creditHours = Float.parseFloat(creditHoursField.getText());
+            creditHoursField.lock();
+        } else System.out.println("Pick a value between 12 and 24");
+    }
+
+    public void submit() {
+        study = Float.parseFloat(studyTimeField.getText());
+        if (numberCheck()) {
+            workHours = Float.parseFloat(workHoursField.getText());
+            workHoursField.setText("0");
+            classTime = Float.parseFloat(classTimeField.getText());
+            classTimeField.setText("0");
+            studyTime = Float.parseFloat(studyTimeField.getText());
+            studyTimeField.setText("0");
+            academicVisit = Float.parseFloat(academicVisitField.getText());
+            academicVisitField.setText("0");
+            partyTime = Float.parseFloat(partyTimeField.getText());
+            partyTimeField.setText("0");
+
+            System.out.println("Credit Hours:\t\t" + creditHours + "\n" +
+                    "Work Hours:\t\t\t" + workHours + "\n" +
+                    "Class Time:\t\t\t" + classTime + "\n" +
+                    "Study Time:\t\t\t" + studyTime + "\n" +
+                    "Academic Visits:\t" + academicVisit + "\n" +
+                    "Leisure Time:\t\t\t" + partyTime);
+            mathWereDeclaredAgain();
+        }
+        else System.out.println("is brok");
+    }
+
     public JFrame getFrame(){
     	return gameFrame;
     }
