@@ -190,6 +190,12 @@ public class MainSimulator extends PApplet {
         text("Weekly Wealth: " + wealthWeekly, 500, 350);
         text("Weekly Grades: " + gradeWeekly, 500, 400);
         text("Week: " + week, 500, 450);
+        text("Ranges:", 200, 450);
+        text("Work:    " + "0 - 40", 200, 515);
+        text("Class Time:    " + "0 - " + creditHours, 200, 530);
+        text("Study Time:    " + "0 - " + 2*creditHours, 200, 545);
+        text("Academic Time:    " + "0 - " + .5*study, 200, 560);
+        text("Leisure Time:    " + "0 - " + party, 200, 575);
 
     }
 
@@ -255,7 +261,7 @@ public class MainSimulator extends PApplet {
                 System.out.println("YOU BROKE BRUH");
             }
             wealthWeekly = 0;
-            happyWeekly = .25f*partyTime;
+            //happyWeekly = .25f*partyTime; probably not used
         } else happyWeekly += 3*partyTime;
         // happy check
         if (happyWeekly <= 0){ happyWeekly = 0;}
@@ -265,7 +271,7 @@ public class MainSimulator extends PApplet {
 
     }
     private boolean numberCheck() {
-
+        study = Float.parseFloat(studyTimeField.getText());
         math = (HOURS_MAX - creditHours - work - classt - study - aca);
         work = Float.parseFloat(workHoursField.getText());
         classt = Float.parseFloat(classTimeField.getText());
@@ -285,7 +291,6 @@ public class MainSimulator extends PApplet {
     //Buttons
 
     public void weekStart() {
-        study = Float.parseFloat(studyTimeField.getText());
         if (numberCheck()) {
             workHours = Float.parseFloat(workHoursField.getText());
             workHoursField.lock();
@@ -318,21 +323,16 @@ public class MainSimulator extends PApplet {
     }
 
     public void nextWeek() {
-        study = Float.parseFloat(studyTimeField.getText());
         if (numberCheck()) {
-            workHoursField.unlock();
-            workHoursField.clear();
-            classTimeField.unlock();
-            classTimeField.clear();
-            studyTimeField.unlock();
-            studyTimeField.clear();
-            academicVisitField.unlock();
-            academicVisitField.clear();
-            partyTimeField.unlock();
-            partyTimeField.clear();
+            workHoursField.unlock().clear();
+            classTimeField.unlock().clear();
+            studyTimeField.unlock().clear();
+            academicVisitField.unlock().clear();
+            partyTimeField.unlock().clear();
 
             System.out.println("Total Wealth\t\t\t" + wealthTotal + "\n" +
-                    "The happiness and gp average go here");
+                    "Total Happiness\t\t\t" + happySum + "\n" +
+                    "Total Grades\t\t\t" + gradeSum);
             weeklyReset();
         }
         else System.out.println("is brok");
