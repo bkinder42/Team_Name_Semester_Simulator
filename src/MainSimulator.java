@@ -218,6 +218,7 @@ public class MainSimulator extends PApplet {
         gradeWeekly = BASE_GRADE_POTENTIAL;
         week += 1;
     }
+    public void test(){}
 
     public void mathForWeek(){
         float negative;
