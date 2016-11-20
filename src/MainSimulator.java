@@ -352,6 +352,7 @@ public class MainSimulator extends PApplet {
 
 
     }
+    public void test(){}
     public void creditSelect() {
         float cred = Float.parseFloat(creditHoursField.getText());
         if (cred >= MIN_CREDITS && cred <= MAX_CREDITS) {
