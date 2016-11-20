@@ -217,14 +217,23 @@ public class StartMenu {
 		btnStart.setBounds(309, 147, 146, 35);
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// MainSimulator sim = new MainSimulator();
-				// sim.run();
-				// SidePaneTest test = new SidePaneTest(conConfig, jServerPort,
-				// jServerIP, userAccount);
-				// test.show();
-				SQLConsoleTest test = new SQLConsoleTest(conConfig);
-				test.show();
+				MainSimulator sim = new MainSimulator();
+				sim.run(conConfig, userAccount, songs, musicThread);
 				startMenu.setVisible(false);
+				Thread playing = new Thread(new Runnable() {
+					public void run() {
+						while (sim.isPlaying()) {
+							System.out.println("Sim Playing: " + sim.isPlaying());
+						}
+						sim.getFrame().setVisible(false);
+						sim.getFrame().dispose();
+						startMenu.setVisible(true);
+						musicThread.setSongs(songs.get("Menu"));
+						musicThread.getPlayer().play();
+						
+					}
+				});
+				playing.start();
 			}
 		});
 		contentPane.add(btnStart);
@@ -348,6 +357,7 @@ public class StartMenu {
 
 							if (loginFrame.isLoggedIn()) {
 								userAccount.setUser(loginFrame.getUser());
+								System.out.println("userAccount: " + userAccount.getUser());
 								userAccount.setPass(loginFrame.getPass());
 								userAccount.setId(loginFrame.getID());
 								System.out.println(userAccount.toString());

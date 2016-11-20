@@ -24,6 +24,7 @@ public class MusicThread extends Thread{
 	}
 	public void setSongs(ArrayList<String> songs) {
 		this.songs = songs;
+		player.setSongs(songs);
 	}
 	public MusicPlayer getPlayer() {
 		return player;
@@ -33,6 +34,9 @@ public class MusicThread extends Thread{
 	}
 	public void setSoundConfig(HashMap<String, Integer> soundConfig) {
 		this.soundConfig = soundConfig;
+	}
+	public void setPlayer(MusicPlayer player) {
+		this.player = player;
 	}
 	
 	
