@@ -11,6 +11,7 @@ import controlP5.Textfield;
 import processing.awt.PSurfaceAWT.SmoothCanvas;
 import processing.core.PApplet;
 import processing.core.PFont;
+import processing.core.PImage;
 import processing.core.PSurface;
 
 /**
@@ -34,8 +35,12 @@ public class MainSimulator extends PApplet {
     private Textfield creditHoursField, workHoursField, classTimeField, studyTimeField, academicVisitField,
             partyTimeField;
     private PFont font;
-    private int fieldRow1x, fieldRow2x, textRow1x, textRow2x, week;
-    private final float BASE_HAPPINESS = 50,
+    private float brkTestHappy = 96; //int to stand in for happiness until merged with Aaron's code
+    private String errorText;
+    PImage happyFace95, haooyFace90, happyFace80;
+
+    int fieldRow1x, fieldRow2x, textRow1x, textRow2x, week;
+    final float BASE_HAPPINESS = 50,
             BASE_WEALTH = 0,
             BASE_GRADE_POTENTIAL = 90,
             HOURS_MAX = 160,
@@ -58,7 +63,7 @@ public class MainSimulator extends PApplet {
         ps.setSize(1024, 768);
 
         //get the SmoothCanvas that holds the PSurface
-        SmoothCanvas smoothCanvas = (SmoothCanvas) ps.getNative();
+        SmoothCanvas smoothCanvas = (SmoothCanvas)ps.getNative();
 
         //SmoothCanvas can be used as a Component
         gameFrame.add(smoothCanvas);
@@ -76,8 +81,7 @@ public class MainSimulator extends PApplet {
         //start your sketch
         ps.startThread();
     }
-
-    public static void main(String[] args) {
+    public static void main(String[]args){
         //create your JFrame
         gameFrame = new JFrame("JFrame Test");
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,7 +96,7 @@ public class MainSimulator extends PApplet {
         ps.setSize(1024, 768);
 
         //get the SmoothCanvas that holds the PSurface
-        SmoothCanvas smoothCanvas = (SmoothCanvas) ps.getNative();
+        SmoothCanvas smoothCanvas = (SmoothCanvas)ps.getNative();
 
         //SmoothCanvas can be used as a Component
         gameFrame.add(smoothCanvas);
@@ -113,10 +117,13 @@ public class MainSimulator extends PApplet {
 
     public void settings() {
         size(1024, 768);
+        happyFace95 = requestImage("95percentHappy.png");
     }
 
     public void setup() {
         firstWeekStats();
+        settings();
+        errorText = "";
         fieldRow1x = 115;
         fieldRow2x = 500;
         textRow1x = 20;
@@ -182,7 +189,6 @@ public class MainSimulator extends PApplet {
 
     }
 
-
     public void draw() {
         background(128, 0, 128);
         text("Credit Hours: ", textRow1x, 115);
@@ -195,9 +201,13 @@ public class MainSimulator extends PApplet {
         text("2", 920, 495);
         text("3", 920, 695);
         weeklyStats();
-
+        text(errorText, 500, 500);
+        drawFaceImage();
     }
 
+    private void drawFaceImage() {
+        image(happyFace95, 500, 600);
+    }
     public void firstWeekStats(){
         wealthWeekly = 0;
         happySum = 0;
@@ -258,7 +268,7 @@ public class MainSimulator extends PApplet {
         if(creditHours >= 12){
             happyWeekly -= 1.25f*creditHours;
             gradeWeekly -= 1.5f*creditHours;
-            }
+        }
         //work
         wealthWeekly += (5*workHours);
         if(workHours >= 21){
@@ -369,6 +379,6 @@ public class MainSimulator extends PApplet {
     }
 
     public JFrame getFrame(){
-    	return gameFrame;
+        return gameFrame;
     }
 }
