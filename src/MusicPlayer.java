@@ -136,17 +136,17 @@ public class MusicPlayer{
 		});
 	}
 	
-	public void overrideReturn(String resource){
-		if(playing && player != null){
-			Duration curTime = player.getCurrentTime();
-			player = new MediaPlayer(new Media(this.getClass().getResource(resource).toString()));
-			player.setOnEndOfMedia(new Runnable(){
-				public void run(){
-					playAtPoint(curTime);
-				}
-			});
-		}
-	}
+	//public void overrideReturn(String resource){
+	//	if(playing && player != null){
+	//		Duration curTime = player.getCurrentTime();
+	//		player = new MediaPlayer(new Media(this.getClass().getResource(resource).toString()));
+	//		player.setOnEndOfMedia(new Runnable(){
+	//			public void run(){
+	//				playAtPoint(curTime);
+	//			}
+	//		});
+	//	}
+//	}
 	
 	private void playAtPoint(Duration time) {
 		player = new MediaPlayer(new Media(this.getClass().getResource(songs.get(curSong)).toString()));
@@ -296,6 +296,9 @@ public class MusicPlayer{
 		Duration time = new Duration(progressBarVal * 1000);
 	       player.seek(time);
 	}
+
+
+
 }
 
 class NoSongsException extends RuntimeException{
