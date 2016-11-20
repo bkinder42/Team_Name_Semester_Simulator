@@ -24,10 +24,10 @@ import processing.core.PSurface;
  */
 
 public class MainSimulator extends PApplet {
-	private static JFrame gameFrame;
+    private static JFrame gameFrame;
     private ControlP5 cp5;
     private float creditHours, workHours, classTime, studyTime, academicVisit, partyTime, wealthWeekly, wealthTotal,
-                                happyWeekly, happySum, happyAverage, gradeWeekly, gradeSum, gradeAverage;
+            happyWeekly, happySum, happyAverage, gradeWeekly, gradeSum, gradeAverage;
 
     private float work, study, classt, aca, party, math; // Temporary variables for math shenanigans
 
@@ -36,15 +36,15 @@ public class MainSimulator extends PApplet {
     private PFont font;
     private int fieldRow1x, fieldRow2x, textRow1x, textRow2x, week;
     private final float BASE_HAPPINESS = 50,
-                        BASE_WEALTH = 0,
-                        BASE_GRADE_POTENTIAL = 90,
-                        HOURS_MAX = 160,
-                        MIN_CREDITS = 12,
-                        MAX_CREDITS = 24,
-                        MAX_WORK = 40;
-    
-    public static void run(){
-    	//create your JFrame
+            BASE_WEALTH = 0,
+            BASE_GRADE_POTENTIAL = 90,
+            HOURS_MAX = 160,
+            MIN_CREDITS = 12,
+            MAX_CREDITS = 24,
+            MAX_WORK = 40;
+
+    public static void run() {
+        //create your JFrame
         gameFrame = new JFrame("JFrame Test");
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -58,11 +58,11 @@ public class MainSimulator extends PApplet {
         ps.setSize(1024, 768);
 
         //get the SmoothCanvas that holds the PSurface
-        SmoothCanvas smoothCanvas = (SmoothCanvas)ps.getNative();
+        SmoothCanvas smoothCanvas = (SmoothCanvas) ps.getNative();
 
         //SmoothCanvas can be used as a Component
         gameFrame.add(smoothCanvas);
-        
+
         //Adds a JPanel to right of processing
         JPanel panelTest = new JPanel();
         panelTest.setBackground(Color.white);
@@ -76,8 +76,9 @@ public class MainSimulator extends PApplet {
         //start your sketch
         ps.startThread();
     }
-    public static void main(String[]args){
-    	//create your JFrame
+
+    public static void main(String[] args) {
+        //create your JFrame
         gameFrame = new JFrame("JFrame Test");
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -91,11 +92,11 @@ public class MainSimulator extends PApplet {
         ps.setSize(1024, 768);
 
         //get the SmoothCanvas that holds the PSurface
-        SmoothCanvas smoothCanvas = (SmoothCanvas)ps.getNative();
+        SmoothCanvas smoothCanvas = (SmoothCanvas) ps.getNative();
 
         //SmoothCanvas can be used as a Component
         gameFrame.add(smoothCanvas);
-        
+
         //Adds a JPanel to right of processing
         JPanel panelTest = new JPanel();
         panelTest.setBackground(Color.white);
@@ -175,8 +176,12 @@ public class MainSimulator extends PApplet {
 
         cp5.addButton("nextWeek").setSize(50, 20).setPosition(900, 700).setLabel("Next Week");
         cp5.addButton("weekStart").setSize(50, 20).setPosition(900, 500).setLabel("Start Week");
-        cp5.addButton("creditSelect").setSize(50,20).setPosition(330,fieldRow1x-15).setLabel("Credits");
+        cp5.addButton("creditSelect").setSize(50, 20).setPosition(330, fieldRow1x - 15).setLabel("Credits");
+
+
+
     }
+
 
     public void draw() {
         background(128, 0, 128);
@@ -186,16 +191,10 @@ public class MainSimulator extends PApplet {
         text("Study Time: ", textRow1x, 265);
         text("Academic Visits: ", textRow2x, 115);
         text("Party Time: ", textRow2x, 165);
-        text("Happiness: " + happyWeekly, 500, 300);
-        text("Weekly Wealth: " + wealthWeekly, 500, 350);
-        text("Weekly Grades: " + gradeWeekly, 500, 400);
-        text("Week: " + week, 500, 450);
-        text("Ranges:", 200, 450);
-        text("Work:    " + "0 - 40", 200, 515);
-        text("Class Time:    " + "0 - " + creditHours, 200, 530);
-        text("Study Time:    " + "0 - " + 2*creditHours, 200, 545);
-        text("Academic Time:    " + "0 - " + .5*study, 200, 560);
-        text("Leisure Time:    " + "0 - " + party, 200, 575);
+        text("1", 350, fieldRow1x - 20);
+        text("2", 920, 495);
+        text("3", 920, 695);
+        weeklyStats();
 
     }
 
@@ -207,11 +206,39 @@ public class MainSimulator extends PApplet {
         happyWeekly = BASE_HAPPINESS;
         gradeWeekly = BASE_GRADE_POTENTIAL;
     }
-
-    public boolean weekCounter(){
-        if (week >= 14){
+    public void weeklyStats() {
+        if (!isSchoolOver()) {
+            text("Happiness: " + happyWeekly, 500, 300);
+            text("Weekly Wealth: " + wealthWeekly, 500, 350);
+            text("Weekly Grades: " + gradeWeekly, 500, 400);
+            text("All your money: " + wealthTotal, 500, 500);
+            text("Week: " + week, 500, 450);
+            //Below is not working properly
+//            text("Ranges:", 200, 450);
+//            text("Work:    " + "0 - 40", 200, 515);
+//            text("Class Time:    " + "0 - " + creditHours, 200, 530);
+//            text("Study Time:    " + "0 - " + 2 * creditHours, 200, 545);
+//            text("Academic Time:    " + "0 - " + .5 * study, 200, 560);
+//            text("Leisure Time:    " + "0 - " + math, 200, 575);
+        } else {
+            text("Final Happiness: " + happySum, 500, 300);
+            text("Final Grades: " + gradeSum, 500, 400);
+            text("Final Wealth: " + wealthTotal, 500, 350);
+            workHoursField.lock();
+            academicVisitField.lock();
+            studyTimeField.lock();
+            partyTimeField.lock();
+            classTimeField.lock();
+        }
+    }
+    public boolean isSchoolOver() {
+        if (week > 15) {
+            happySum = happyAverage;
+            happyAverage /= week;
+            gradeSum = gradeAverage;
+            gradeAverage /= week;
             return true;
-        }else return false;
+        } else return false;
 
     }
 
@@ -224,7 +251,6 @@ public class MainSimulator extends PApplet {
         gradeWeekly = BASE_GRADE_POTENTIAL;
         week += 1;
     }
-    public void test(){}
 
     public void mathForWeek(){
         float negative;
@@ -265,6 +291,7 @@ public class MainSimulator extends PApplet {
         } else happyWeekly += 3*partyTime;
         // happy check
         if (happyWeekly <= 0){ happyWeekly = 0;}
+        if (gradeWeekly <= 0){ gradeWeekly = 0;}
 
 
 
@@ -282,9 +309,10 @@ public class MainSimulator extends PApplet {
                 (classt >= 0 && classt <= MAX_CREDITS) &&
                 (study >= 0 && study <= (2*creditHours)) &&
                 (aca >= 0 && aca <= (.5*study)) &&
-                (party >= 0 && party <= math)) {
+                (party >= 0 && party <= math) &&
+                !isSchoolOver()){
             return true;
-        } else return false;
+        } return false;
     }
 
 
@@ -331,14 +359,13 @@ public class MainSimulator extends PApplet {
             partyTimeField.unlock().clear();
 
             System.out.println("Total Wealth\t\t\t" + wealthTotal + "\n" +
-                    "Total Happiness\t\t\t" + happySum + "\n" +
                     "Total Grades\t\t\t" + gradeSum);
             weeklyReset();
         }
-        else System.out.println("is brok");
-        if (weekCounter()){
-            System.out.println("FINAL WEEK");
+        else if (isSchoolOver()){
+            text("EVERYTHING IS DONE", 500, 500);
         }
+        else System.out.println("is brok");
     }
 
     public JFrame getFrame(){
