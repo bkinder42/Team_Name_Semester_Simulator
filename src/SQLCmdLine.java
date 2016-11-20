@@ -1,5 +1,6 @@
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -11,14 +12,19 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 
 import javax.swing.border.MatteBorder;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 public class SQLCmdLine extends JPanel {
 	private HashMap<String, String> conMap;
@@ -30,6 +36,17 @@ public class SQLCmdLine extends JPanel {
 	private String[] reservedWords;
 
 	public SQLCmdLine(HashMap<String, String> conMap, JPanel parent) {
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image image;
+		try {
+			image = ImageIO.read(this.getClass().getResourceAsStream("Reaper Cursor Curve.png"));
+			Cursor c = toolkit.createCustomCursor(image , new Point(this.getX(), 
+			           this.getY()), "img");
+			setCursor (c);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		reservedWords = new String[] { "CREATE", "DROP", "TRUNCATE" };
 		infoFrame = new InfoFrame();
 		infoFrame.show();
