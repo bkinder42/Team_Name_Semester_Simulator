@@ -80,6 +80,7 @@ public class SimSidePanel extends JPanel {
 		userInfo.setEditable(false);
 		userInfo.setOpaque(true);
 		userInfo.setColumns(10);
+		userInfo.setFont(new Font("Takoma", Font.BOLD, 20));
 
 		JPanel chat = new JPanel();
 		chat.setBorder(new LineBorder(new Color(0, 0, 0), 3));
@@ -89,6 +90,9 @@ public class SimSidePanel extends JPanel {
 
 		JTextArea textArea = new JTextArea();
 		textArea.setOpaque(false);
+		textArea.setFont(new Font("Takoma" , Font.PLAIN, 40));
+		textArea.setForeground(Color.RED);
+		textArea.setText("Needs testing\nTO COME");
 		chat.add(textArea, BorderLayout.CENTER);
 
 		textField = new JTextField();
@@ -112,11 +116,14 @@ public class SimSidePanel extends JPanel {
 					dtm.setColumnIdentifiers(columnHeads);
 					scoreboard.setModel(dtm);
 
+					boolean accountFound = false;
 					for (int i : scores.keySet()) {
 						dtm.addRow(new String[] { "" + i, scores.get(i)[0], scores.get(i)[1] });
 						if (scores.get(i)[0].equals(userAcc.getUser())){
-							userInfo.setText(i + " YOU: " + scores.get(i)[1]);
+							userInfo.setText(" YOU-> " + i + "th place: " + scores.get(i)[1]);
+							accountFound = true;
 						}else{
+							if(!accountFound)
 							userInfo.setText("RETURN TO LOGIN TO SEE SCORE");
 						}
 					}
