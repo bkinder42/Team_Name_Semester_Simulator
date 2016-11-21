@@ -10,6 +10,7 @@ public class MusicPlayer{
 	private boolean loop;
 	private ArrayList<String> songs;
 	MediaPlayer player;
+	private double volume;
 	private int curSong;
 	private boolean playing;
 	public final double maxVol;
@@ -22,13 +23,14 @@ public class MusicPlayer{
 	 * @param loop
 	 */
 	public MusicPlayer(ArrayList<String> songs, boolean loop){
-		maxVol = 1;
+		maxVol = 100;
 		minVol = 0;
 		loadToolkit();
 		this.loop = loop;
 		this.songs = songs;
 		curSong = 0;
 		playing = false;
+		volume = .5;
 	}
 	
 	/**Constructor- Song: specific song to add, loop: Whether or not to loop the song*/
@@ -41,6 +43,7 @@ public class MusicPlayer{
 		this.loop = loop;
 		this.curSong = 0;
 		playing = false;
+		volume = .5;
 	}
 	/** Constructor- songs: List of song titles, not resource paths*/
 	public MusicPlayer(ArrayList<String> songs){
@@ -51,6 +54,7 @@ public class MusicPlayer{
 		this.songs = songs;
 		curSong = 0;
 		playing = false;
+		volume= .5;
 	}
 	/**Constructor- Song: specific song to add*/
 	public MusicPlayer(String song){
@@ -62,6 +66,7 @@ public class MusicPlayer{
 		this.loop = false;
 		this.curSong = 0;
 		playing = false;
+		volume = .5;
 	}
 	/**Default constructor*/
 	public MusicPlayer(){
@@ -73,6 +78,7 @@ public class MusicPlayer{
 		loop = false;
 		curSong = 0;
 		playing = false;
+		volume = .5;
 	}
 	/**Constructor- loop: whether or not to loop music, when songs added*/
 	public MusicPlayer(boolean loop){
@@ -84,6 +90,7 @@ public class MusicPlayer{
 		this.loop = loop;
 		this.curSong = 0;
 		playing = false;
+		volume = .5;
 	}
 	private void loadToolkit() {
 		JFXPanel toolkitLoader= new JFXPanel();
@@ -94,6 +101,7 @@ public class MusicPlayer{
 	}
 	/**Plays the songs contained within the songs array*/
 	public void play(){
+		System.out.println(songs == null);
 		if(songs.size() == 0)
 			throw new NoSongsException();
 		Media media = new Media(this.getClass().getResource(songs.get(curSong)).toString());
@@ -201,7 +209,12 @@ public class MusicPlayer{
 	 * @param double
 	 */
 	public void changeVolume(Double volume){
+		this.volume = volume;
 		player.setVolume(volume);
+	}
+	
+	public double getVolume(){
+		return volume;
 	}
 	
 	public void playerReset(){
@@ -215,14 +228,14 @@ public class MusicPlayer{
 	public void setLoop(boolean loop) {
 		this.loop = loop;
 	}
-	
+
 	public void loop(){
 		this.loop = true;
 	}
 	public void noLoop(){
 		this.loop = false;
 	}
-
+	
 	public ArrayList<String> getSongs() {
 		return songs;
 	}
@@ -230,7 +243,6 @@ public class MusicPlayer{
 	public void setSongs(ArrayList<String> songs) {
 		this.songs = songs;
 	}
-
 	public MediaPlayer getPlayer() {
 		return player;
 	}
@@ -295,6 +307,14 @@ public class MusicPlayer{
 	public void setTime(int progressBarVal) {
 		Duration time = new Duration(progressBarVal * 1000);
 	       player.seek(time);
+	}
+
+	public double getMaxVol() {
+		return maxVol;
+	}
+
+	public double getMinVol() {
+		return minVol;
 	}
 }
 

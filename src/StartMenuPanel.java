@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 public class StartMenuPanel extends JPanel {
 
-/**
+	/**
 	 * Create the panel.
 	 */
 	private Image background;
