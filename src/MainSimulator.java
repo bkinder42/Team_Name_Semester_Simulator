@@ -29,28 +29,54 @@ import java.util.Random;
 public class MainSimulator extends PApplet {
     private static JFrame gameFrame;
     private ControlP5 cp5;
-    private float creditHours, workHours, classTime, studyTime, academicVisit, partyTime, wealthWeekly, wealthTotal,
-            happyWeekly, happySum, happyAverage, gradeWeekly, gradeSum, gradeAverage;
+    private float creditHours;
+    private float workHours;
+    private float classTime;
+    private float studyTime;
+    private float academicVisit;
+    private float partyTime;
+    private float wealthWeekly;
+    private float wealthTotal;
+    private float happyWeekly;
+    private float happySum;
+    private float happyAverage;
+    private float gradeWeekly;
+    private float gradeSum;
+    private float gradeAverage;
 
-    private float work, study, classt, aca, party, math; // Temporary variables for math shenanigans
+    // Temporary variables for math shenanigans
+    private float work;
+    private float study;
+    private float classt;
+    private float aca;
+    private float party;
+    private float math;
 
-    private Textfield creditHoursField, workHoursField, classTimeField, studyTimeField, academicVisitField,
-            partyTimeField;
+    private Textfield creditHoursField;
+    private Textfield workHoursField;
+    private Textfield classTimeField;
+    private Textfield studyTimeField;
+    private Textfield academicVisitField;
+    private Textfield partyTimeField;
     private PFont font;
-    private int fieldRow1x, fieldRow2x, textRow1x, textRow2x, weekNum;
+
+    private int fieldRow1x;
+    private int fieldRow2x;
+    private int textRow1x;
+    private int textRow2x;
+    private int week;
+    private int weekNum;
     private float brkTestHappy = 96; //int to stand in for happiness until merged with Aaron's code
     private String errorText;
-    PImage happyFace95, haooyFace90, happyFace80;
 
     private int randNum;
-    int fieldRow1x, fieldRow2x, textRow1x, textRow2x, week;
-    final float BASE_HAPPINESS = 50,
-            BASE_WEALTH = 0,
-            BASE_GRADE_POTENTIAL = 90,
-            HOURS_MAX = 160,
-            MIN_CREDITS = 12,
-            MAX_CREDITS = 24,
-            MAX_WORK = 40;
+    private final float BASE_HAPPINESS = 50;
+    private final float BASE_WEALTH = 0;
+    private final float BASE_GRADE_POTENTIAL = 90;
+    private final float HOURS_MAX = 160;
+    private final float MIN_CREDITS = 12;
+    private final float MAX_CREDITS = 24;
+    private final float MAX_WORK = 40;
 
     public static void run() {
         //create your JFrame
@@ -121,7 +147,6 @@ public class MainSimulator extends PApplet {
 
     public void settings() {
         size(1024, 768);
-        happyFace95 = requestImage("95percentHappy.png");
     }
 
     public void setup() {
@@ -212,8 +237,8 @@ public class MainSimulator extends PApplet {
     }
 
     private void drawFaceImage() {
-        image(happyFace95, 500, 600);
     }
+
     public void firstWeekStats(){
         wealthWeekly = 0;
         happySum = 0;
