@@ -144,17 +144,17 @@ public class MusicPlayer{
 		});
 	}
 	
-	public void overrideReturn(String resource){
-		if(playing && player != null){
-			Duration curTime = player.getCurrentTime();
-			player = new MediaPlayer(new Media(this.getClass().getResource(resource).toString()));
-			player.setOnEndOfMedia(new Runnable(){
-				public void run(){
-					playAtPoint(curTime);
-				}
-			});
-		}
-	}
+	//public void overrideReturn(String resource){
+	//	if(playing && player != null){
+	//		Duration curTime = player.getCurrentTime();
+	//		player = new MediaPlayer(new Media(this.getClass().getResource(resource).toString()));
+	//		player.setOnEndOfMedia(new Runnable(){
+	//			public void run(){
+	//				playAtPoint(curTime);
+	//			}
+	//		});
+	//	}
+//	}
 	
 	private void playAtPoint(Duration time) {
 		player = new MediaPlayer(new Media(this.getClass().getResource(songs.get(curSong)).toString()));
@@ -216,7 +216,7 @@ public class MusicPlayer{
 	public double getVolume(){
 		return volume;
 	}
-	
+
 	public void playerReset(){
 		player = null;
 	}
@@ -235,7 +235,7 @@ public class MusicPlayer{
 	public void noLoop(){
 		this.loop = false;
 	}
-	
+
 	public ArrayList<String> getSongs() {
 		return songs;
 	}

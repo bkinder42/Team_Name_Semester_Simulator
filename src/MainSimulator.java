@@ -14,6 +14,8 @@ import processing.core.PFont;
 import processing.core.PImage;
 import processing.core.PSurface;
 
+import java.util.Random;
+
 /**
  * * File: MainSimulator
  * * Author: Ben Kinder, Andrew Knox, Aaron Wood
@@ -35,10 +37,12 @@ public class MainSimulator extends PApplet {
     private Textfield creditHoursField, workHoursField, classTimeField, studyTimeField, academicVisitField,
             partyTimeField;
     private PFont font;
+    private int fieldRow1x, fieldRow2x, textRow1x, textRow2x, weekNum;
     private float brkTestHappy = 96; //int to stand in for happiness until merged with Aaron's code
     private String errorText;
     PImage happyFace95, haooyFace90, happyFace80;
 
+    private int randNum;
     int fieldRow1x, fieldRow2x, textRow1x, textRow2x, week;
     final float BASE_HAPPINESS = 50,
             BASE_WEALTH = 0,
@@ -128,7 +132,9 @@ public class MainSimulator extends PApplet {
         fieldRow2x = 500;
         textRow1x = 20;
         textRow2x = 390;
+        weekNum = 1;
         font = createFont("arial", 16);
+
         background(128, 0, 128);
         cp5 = new ControlP5(this);
         fill(255);
@@ -378,7 +384,41 @@ public class MainSimulator extends PApplet {
         else System.out.println("is brok");
     }
 
+    public void randomGenerator(){
+        Random rand = new Random();
+
+        randNum = rand.nextInt(6) + 1;
+    }
+
+    private void randomEvents(){
+        if(randNum == 1) {
+            System.out.println("You decide a night of partying would be better than homework.");
+            //decrease wealth and grades by small amount, increase happiness by medium amount
+        }
+        if(randNum == 2) {
+            System.out.println("A professor offers an easy extra credit assignment.");
+            //increase happiness and grade by small amount
+        }
+        if(randNum == 3) {
+            System.out.println("You binge Game of Thrones and fall asleep to the beautiful\n" +
+                    "sound of Kit Harrington's voice...without working on your Comp project.");
+            //decrease grade by small amount and raise happiness by small amount
+        }
+        if(randNum == 4) {
+            System.out.println("You stay up very late, getting a lot of studying done.");
+            //decrease happiness by small amount and raise grade by medium amount
+        }
+        if(randNum == 5) {
+            System.out.println("You decide to work overtime for a few hours.");
+            //decrease grade by small amount and raise wealth and happiness by small amount
+        }
+        if(randNum == 6) {
+            System.out.println("You get in an argument with a friend.");
+            //decrease happiness by medium amount
+        }
+    }
+
     public JFrame getFrame(){
-        return gameFrame;
+    	return gameFrame;
     }
 }
