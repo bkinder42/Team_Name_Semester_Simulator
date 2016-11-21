@@ -1,0 +1,3 @@
+Popup window under mouse for info on Database
+Multiple character control press for exit
+EXIT: Exit cmd

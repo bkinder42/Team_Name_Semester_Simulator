@@ -14,9 +14,11 @@ import processing.core.PFont;
 import processing.core.PImage;
 import processing.core.PSurface;
 
+import java.util.Random;
+
 /**
  * * File: MainSimulator
- * * Author: Ben Kinder, Andrew Knox
+ * * Author: Ben Kinder, Andrew Knox, Aaron Wood
  * * Date Created: 11/1/16
  * * Class: COMP 101
  * * Email: bkinder1@umbc.edu
@@ -25,19 +27,59 @@ import processing.core.PSurface;
  */
 
 public class MainSimulator extends PApplet {
-	private static JFrame gameFrame;
+    private static JFrame gameFrame;
     private ControlP5 cp5;
-    private float creditHours, workHours, classTime, studyTime, academicVisit, partyTime;
-    private Textfield creditHoursField, workHoursField, classTimeField, studyTimeField, academicVisitField,
-            partyTimeField;
+    private float creditHours;
+    private float workHours;
+    private float classTime;
+    private float studyTime;
+    private float academicVisit;
+    private float partyTime;
+    private float wealthWeekly;
+    private float wealthTotal;
+    private float happyWeekly;
+    private float happySum;
+    private float happyAverage;
+    private float gradeWeekly;
+    private float gradeSum;
+    private float gradeAverage;
+
+    // Temporary variables for math shenanigans
+    private float work;
+    private float study;
+    private float classt;
+    private float aca;
+    private float party;
+    private float math;
+
+    private Textfield creditHoursField;
+    private Textfield workHoursField;
+    private Textfield classTimeField;
+    private Textfield studyTimeField;
+    private Textfield academicVisitField;
+    private Textfield partyTimeField;
     private PFont font;
-    private int fieldRow1x, fieldRow2x, textRow1x, textRow2x, weekNum;
+
+    private int fieldRow1x;
+    private int fieldRow2x;
+    private int textRow1x;
+    private int textRow2x;
+    private int week;
+    private int weekNum;
     private float brkTestHappy = 96; //int to stand in for happiness until merged with Aaron's code
     private String errorText;
-    PImage happyFace95, haooyFace90, happyFace80;
-    
-    public static void main(String[]args){
-    	//create your JFrame
+
+    private int randNum;
+    private final float BASE_HAPPINESS = 50;
+    private final float BASE_WEALTH = 0;
+    private final float BASE_GRADE_POTENTIAL = 90;
+    private final float HOURS_MAX = 160;
+    private final float MIN_CREDITS = 12;
+    private final float MAX_CREDITS = 24;
+    private final float MAX_WORK = 40;
+
+    public static void run() {
+        //create your JFrame
         gameFrame = new JFrame("JFrame Test");
         gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -55,7 +97,40 @@ public class MainSimulator extends PApplet {
 
         //SmoothCanvas can be used as a Component
         gameFrame.add(smoothCanvas);
-        
+
+        //Adds a JPanel to right of processing
+        JPanel panelTest = new JPanel();
+        panelTest.setBackground(Color.white);
+        panelTest.setBounds(1024, 0, 500, 768);
+        gameFrame.add(panelTest);
+
+        //make your JFrame visible
+        gameFrame.setSize(1024 + 500, 768);
+        gameFrame.setVisible(true);
+
+        //start your sketch
+        ps.startThread();
+    }
+    public static void main(String[]args){
+        //create your JFrame
+        gameFrame = new JFrame("JFrame Test");
+        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //create your sketch
+        MainSimulator pt = new MainSimulator();
+
+        //get the PSurface from the sketch
+        PSurface ps = pt.initSurface();
+
+        //initialize the PSurface
+        ps.setSize(1024, 768);
+
+        //get the SmoothCanvas that holds the PSurface
+        SmoothCanvas smoothCanvas = (SmoothCanvas)ps.getNative();
+
+        //SmoothCanvas can be used as a Component
+        gameFrame.add(smoothCanvas);
+
         //Adds a JPanel to right of processing
         JPanel panelTest = new JPanel();
         panelTest.setBackground(Color.white);
@@ -72,10 +147,10 @@ public class MainSimulator extends PApplet {
 
     public void settings() {
         size(1024, 768);
-        happyFace95 = requestImage("95percentHappy.png");
     }
 
     public void setup() {
+        firstWeekStats();
         settings();
         errorText = "";
         fieldRow1x = 115;
@@ -137,7 +212,12 @@ public class MainSimulator extends PApplet {
                 .setColor(color(0))
                 .setFont(font);
 
-        cp5.addButton("submit").setSize(50, 20).setPosition(900, 700).setLabel("Submit");
+        cp5.addButton("nextWeek").setSize(50, 20).setPosition(900, 700).setLabel("Next Week");
+        cp5.addButton("weekStart").setSize(50, 20).setPosition(900, 500).setLabel("Start Week");
+        cp5.addButton("creditSelect").setSize(50, 20).setPosition(330, fieldRow1x - 15).setLabel("Credits");
+
+
+
     }
 
     public void draw() {
@@ -148,50 +228,221 @@ public class MainSimulator extends PApplet {
         text("Study Time: ", textRow1x, 265);
         text("Academic Visits: ", textRow2x, 115);
         text("Party Time: ", textRow2x, 165);
-
-        text("Week Number: " + weekNum, 500, 250);
+        text("1", 350, fieldRow1x - 20);
+        text("2", 920, 495);
+        text("3", 920, 695);
+        weeklyStats();
         text(errorText, 500, 500);
         drawFaceImage();
     }
 
     private void drawFaceImage() {
-        image(happyFace95, 500, 600);
     }
 
-    private void submit() {
-        if (creditHoursField.getIndex() != 0 &&
-                workHoursField.getIndex() !=0 &&
-                classTimeField.getIndex() != 0 &&
-                studyTimeField.getIndex() != 0 &&
-                academicVisitField.getIndex() != 0 &&
-                partyTimeField.getIndex() != 0) {
-            errorText = "";
-            creditHours = Float.parseFloat(creditHoursField.getText());
-            creditHoursField.clear();
-            workHours = Float.parseFloat(workHoursField.getText());
-            workHoursField.clear();
-            classTime = Float.parseFloat(classTimeField.getText());
-            classTimeField.clear();
-            studyTime = Float.parseFloat(studyTimeField.getText());
-            studyTimeField.clear();
-            academicVisit = Float.parseFloat(academicVisitField.getText());
-            academicVisitField.clear();
-            partyTime = Float.parseFloat(partyTimeField.getText());
-            partyTimeField.clear();
+    public void firstWeekStats(){
+        wealthWeekly = 0;
+        happySum = 0;
+        gradeSum = 0;
+        week = 1;
+        happyWeekly = BASE_HAPPINESS;
+        gradeWeekly = BASE_GRADE_POTENTIAL;
+    }
+    public void weeklyStats() {
+        if (!isSchoolOver()) {
+            text("Happiness: " + happyWeekly, 500, 300);
+            text("Weekly Wealth: " + wealthWeekly, 500, 350);
+            text("Weekly Grades: " + gradeWeekly, 500, 400);
+            text("All your money: " + wealthTotal, 500, 500);
+            text("Week: " + week, 500, 450);
+            //Below is not working properly
+//            text("Ranges:", 200, 450);
+//            text("Work:    " + "0 - 40", 200, 515);
+//            text("Class Time:    " + "0 - " + creditHours, 200, 530);
+//            text("Study Time:    " + "0 - " + 2 * creditHours, 200, 545);
+//            text("Academic Time:    " + "0 - " + .5 * study, 200, 560);
+//            text("Leisure Time:    " + "0 - " + math, 200, 575);
+        } else {
+            text("Final Happiness: " + happySum, 500, 300);
+            text("Final Grades: " + gradeSum, 500, 400);
+            text("Final Wealth: " + wealthTotal, 500, 350);
+            workHoursField.lock();
+            academicVisitField.lock();
+            studyTimeField.lock();
+            partyTimeField.lock();
+            classTimeField.lock();
+        }
+    }
+    public boolean isSchoolOver() {
+        if (week > 15) {
+            happySum = happyAverage;
+            happyAverage /= week;
+            gradeSum = gradeAverage;
+            gradeAverage /= week;
+            return true;
+        } else return false;
 
+    }
+
+    public void weeklyReset(){
+        happySum += happyWeekly;
+        wealthTotal += wealthWeekly;
+        gradeSum += gradeWeekly;
+        wealthWeekly = 0;
+        happyWeekly = BASE_HAPPINESS;
+        gradeWeekly = BASE_GRADE_POTENTIAL;
+        week += 1;
+    }
+
+    public void mathForWeek(){
+        float negative;
+        //credits
+        if(creditHours >= 12){
+            happyWeekly -= 1.25f*creditHours;
+            gradeWeekly -= 1.5f*creditHours;
+        }
+        //work
+        wealthWeekly += (5*workHours);
+        if(workHours >= 21){
+            happyWeekly -= 1*workHours;
+            gradeWeekly -= .5*workHours;
+        } else happyWeekly -= .5*workHours;
+        if(wealthWeekly >= 55){ happyWeekly += 5; }
+        //class time
+        happyWeekly -= 1*classTime;
+        gradeWeekly += .5*classTime;
+        //study
+        gradeWeekly += .5*studyTime;
+        happyWeekly -= .5*studyTime;
+        //academic visit
+        gradeWeekly += .5*academicVisit;
+        happyWeekly -= .5*academicVisit;
+        //Leisure time
+        if(partyTime <= 0) {gradeWeekly -= 50;}
+        gradeWeekly -= 3*partyTime;
+        wealthWeekly -= 6*partyTime;
+        if ((wealthWeekly - 6*partyTime) <= 0 ){
+            negative = (wealthWeekly -= 7*partyTime);
+            wealthTotal += negative;
+            if (wealthTotal <= 0){
+                wealthTotal = 0;
+                System.out.println("YOU BROKE BRUH");
+            }
+            wealthWeekly = 0;
+            //happyWeekly = .25f*partyTime; probably not used
+        } else happyWeekly += 3*partyTime;
+        // happy check
+        if (happyWeekly <= 0){ happyWeekly = 0;}
+        if (gradeWeekly <= 0){ gradeWeekly = 0;}
+
+
+
+
+    }
+    private boolean numberCheck() {
+        study = Float.parseFloat(studyTimeField.getText());
+        math = (HOURS_MAX - creditHours - work - classt - study - aca);
+        work = Float.parseFloat(workHoursField.getText());
+        classt = Float.parseFloat(classTimeField.getText());
+        aca = Float.parseFloat(academicVisitField.getText());
+        party = Float.parseFloat(partyTimeField.getText());
+
+        if ((work >= 0 && work <= MAX_WORK) &&
+                (classt >= 0 && classt <= MAX_CREDITS) &&
+                (study >= 0 && study <= (2*creditHours)) &&
+                (aca >= 0 && aca <= (.5*study)) &&
+                (party >= 0 && party <= math) &&
+                !isSchoolOver()){
+            return true;
+        } return false;
+    }
+
+
+    //Buttons
+
+    public void weekStart() {
+        if (numberCheck()) {
+            workHours = Float.parseFloat(workHoursField.getText());
+            workHoursField.lock();
+            classTime = Float.parseFloat(classTimeField.getText());
+            classTimeField.lock();
+            studyTime = Float.parseFloat(studyTimeField.getText());
+            studyTimeField.lock();
+            academicVisit = Float.parseFloat(academicVisitField.getText());
+            academicVisitField.lock();
+            partyTime = Float.parseFloat(partyTimeField.getText());
+            partyTimeField.lock();
+            mathForWeek();
             System.out.println("Credit Hours:\t\t" + creditHours + "\n" +
                     "Work Hours:\t\t\t" + workHours + "\n" +
                     "Class Time:\t\t\t" + classTime + "\n" +
                     "Study Time:\t\t\t" + studyTime + "\n" +
                     "Academic Visits:\t" + academicVisit + "\n" +
-                    "Party Time:\t\t\t" + partyTime);
-            weekNum++;
-        } else {
-            System.out.println("Please fill all fields");
-            errorText = "Please fill in all fields before submitting!";
+                    "Leisure Time:\t\t\t" + partyTime);
+        }
+        else System.out.println("you broke it");
+
+
+    }
+    public void creditSelect() {
+        float cred = Float.parseFloat(creditHoursField.getText());
+        if (cred >= MIN_CREDITS && cred <= MAX_CREDITS) {
+            creditHours = Float.parseFloat(creditHoursField.getText());
+            creditHoursField.lock();
+        } else System.out.println("Pick a value between 12 and 24");
+    }
+
+    public void nextWeek() {
+        if (numberCheck()) {
+            workHoursField.unlock().clear();
+            classTimeField.unlock().clear();
+            studyTimeField.unlock().clear();
+            academicVisitField.unlock().clear();
+            partyTimeField.unlock().clear();
+
+            System.out.println("Total Wealth\t\t\t" + wealthTotal + "\n" +
+                    "Total Grades\t\t\t" + gradeSum);
+            weeklyReset();
+        }
+        else if (isSchoolOver()){
+            text("EVERYTHING IS DONE", 500, 500);
+        }
+        else System.out.println("is brok");
+    }
+
+    public void randomGenerator(){
+        Random rand = new Random();
+
+        randNum = rand.nextInt(6) + 1;
+    }
+
+    private void randomEvents(){
+        if(randNum == 1) {
+            System.out.println("You decide a night of partying would be better than homework.");
+            //decrease wealth and grades by small amount, increase happiness by medium amount
+        }
+        if(randNum == 2) {
+            System.out.println("A professor offers an easy extra credit assignment.");
+            //increase happiness and grade by small amount
+        }
+        if(randNum == 3) {
+            System.out.println("You binge Game of Thrones and fall asleep to the beautiful\n" +
+                    "sound of Kit Harrington's voice...without working on your Comp project.");
+            //decrease grade by small amount and raise happiness by small amount
+        }
+        if(randNum == 4) {
+            System.out.println("You stay up very late, getting a lot of studying done.");
+            //decrease happiness by small amount and raise grade by medium amount
+        }
+        if(randNum == 5) {
+            System.out.println("You decide to work overtime for a few hours.");
+            //decrease grade by small amount and raise wealth and happiness by small amount
+        }
+        if(randNum == 6) {
+            System.out.println("You get in an argument with a friend.");
+            //decrease happiness by medium amount
         }
     }
-    
+
     public JFrame getFrame(){
     	return gameFrame;
     }

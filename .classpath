@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry including="**/MainSimulator.java" kind="src" path="src"/>
+	<classpathentry including="*|**/MainSimulator.java" kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="lib" path="lib/core.jar"/>
 	<classpathentry kind="lib" path="lib/controlP5.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<accessrules>
+			<accessrule kind="accessible" pattern="**/**"/>
+		</accessrules>
+	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Spyro/IdeaProjects/Team_Name_Semester_Simulator/out/production/Team Name Semester Simulator"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
