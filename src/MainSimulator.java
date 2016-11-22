@@ -1,4 +1,11 @@
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.geom.Arc2D;
 
 import javax.swing.JFrame;
@@ -14,6 +21,8 @@ import processing.core.PFont;
 import processing.core.PImage;
 import processing.core.PSurface;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -27,7 +36,14 @@ import java.util.Random;
  */
 
 public class MainSimulator extends PApplet {
+	//GUI Vars
     private static JFrame gameFrame;
+    public final String processingCard = "Processing", sqlCard = "Sql";
+    private boolean playing;
+    
+    //Sound Vars
+    private HashMap<String, ArrayList<String>> songLists;
+    
     private ControlP5 cp5;
     private float creditHours;
     private float workHours;
@@ -78,10 +94,20 @@ public class MainSimulator extends PApplet {
     private final float MAX_CREDITS = 24;
     private final float MAX_WORK = 40;
 
-    public static void run() {
+    public void run(HashMap<String, String> conMap, Account userAcnt, HashMap<String, ArrayList<String>> songLists, MusicThread soundThread) {
+    	soundThread.getPlayer().stop();
+    	this.songLists = songLists;
+    	playing = true;
         //create your JFrame
         gameFrame = new JFrame("JFrame Test");
-        gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        gameFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		gameFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				playing = false;
+				System.out.println("Playing false");
+			}
+		});
 
         //create your sketch
         MainSimulator pt = new MainSimulator();
@@ -95,18 +121,53 @@ public class MainSimulator extends PApplet {
         //get the SmoothCanvas that holds the PSurface
         SmoothCanvas smoothCanvas = (SmoothCanvas)ps.getNative();
 
-        //SmoothCanvas can be used as a Component
-        gameFrame.add(smoothCanvas);
-
         //Adds a JPanel to right of processing
-        JPanel panelTest = new JPanel();
-        panelTest.setBackground(Color.white);
-        panelTest.setBounds(1024, 0, 500, 768);
-        gameFrame.add(panelTest);
+        SimSidePanel sidePanel = new SimSidePanel(conMap, 0, "", userAcnt);
+        sidePanel.setBounds(1024, 0, 500, 768);	
+        gameFrame.add(sidePanel, BorderLayout.EAST);
 
         //make your JFrame visible
         gameFrame.setSize(1024 + 500, 768);
         gameFrame.setVisible(true);
+        
+        //Builds Card Layout and Panels
+        JPanel processingPanel = new JPanel();
+        processingPanel.add(smoothCanvas);
+        JPanel mainPane = new JPanel();
+        SQLCmdLine sqlConsole = new SQLCmdLine(conMap, mainPane);
+        mainPane.setLayout(new CardLayout());
+        mainPane.add(processingPanel, processingCard);
+        mainPane.add(sqlConsole, sqlCard);
+        CardLayout cl = (CardLayout)(mainPane.getLayout());
+        cl.show(mainPane, processingCard);
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+			public boolean dispatchKeyEvent(KeyEvent e) {
+				if (processingPanel.isVisible()) 
+					if (e.getID() == KeyEvent.KEY_PRESSED) 
+						if (e.getKeyCode() == KeyEvent.VK_C && e.isShiftDown() && e.isControlDown()){ 
+							cl.show(mainPane, sqlCard);
+							sqlConsole.setExit(false);
+							class SQLExitThread extends Thread{
+								public SQLExitThread(){
+									super();
+								}
+								public void run(){
+									while(!sqlConsole.isExit()){
+										System.out.println("In Console");
+									}
+									cl.show(mainPane, processingCard);
+									this.stop();
+								}
+							}
+							SQLExitThread sqlExit = new SQLExitThread();
+							sqlExit.start();
+							return false;
+						}
+				return false;
+			}
+		});
+        gameFrame.setResizable(false);
+        gameFrame.add(mainPane);
 
         //start your sketch
         ps.startThread();
@@ -446,4 +507,10 @@ public class MainSimulator extends PApplet {
     public JFrame getFrame(){
     	return gameFrame;
     }
+	public boolean isPlaying() {
+		return playing;
+	}
+	public void setPlaying(boolean playing) {
+		this.playing = playing;
+	}
 }
