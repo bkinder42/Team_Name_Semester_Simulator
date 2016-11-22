@@ -35,7 +35,7 @@ public class SQLCmdLine extends JPanel {
 	private boolean exit;
 	private String[] reservedWords;
 
-	public SQLCmdLine(HashMap<String, String> conMap, JPanel parent) {
+	public SQLCmdLine(HashMap<String, String> conMap, final JPanel parent) {
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		Image image;
 		try {

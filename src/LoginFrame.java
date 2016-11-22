@@ -121,7 +121,7 @@ public class LoginFrame extends JFrame {
 		lblPassword.setBounds(95, 208, 132, 61);
 		contentPane.add(lblPassword);
 
-		JButton btnLogin = new JButton("Login");
+		final JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				login();
@@ -147,7 +147,7 @@ public class LoginFrame extends JFrame {
 		btnLogin.setBounds(95, 274, 177, 61);
 		contentPane.add(btnLogin);
 
-		JButton btnCreateAccount = new JButton("Create Account");
+		final JButton btnCreateAccount = new JButton("Create Account");
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				createAccount();
@@ -173,7 +173,7 @@ public class LoginFrame extends JFrame {
 		btnCreateAccount.setBounds(317, 267, 225, 72);
 		contentPane.add(btnCreateAccount);
 		
-		JButton btnCancel = new JButton("Cancel");
+		final JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				canceled = true;

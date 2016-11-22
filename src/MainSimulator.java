@@ -131,14 +131,14 @@ public class MainSimulator extends PApplet {
         gameFrame.setVisible(true);
         
         //Builds Card Layout and Panels
-        JPanel processingPanel = new JPanel();
+        final JPanel processingPanel = new JPanel();
         processingPanel.add(smoothCanvas);
-        JPanel mainPane = new JPanel();
-        SQLCmdLine sqlConsole = new SQLCmdLine(conMap, mainPane);
+        final JPanel mainPane = new JPanel();
+        final SQLCmdLine sqlConsole = new SQLCmdLine(conMap, mainPane);
         mainPane.setLayout(new CardLayout());
         mainPane.add(processingPanel, processingCard);
         mainPane.add(sqlConsole, sqlCard);
-        CardLayout cl = (CardLayout)(mainPane.getLayout());
+        final CardLayout cl = (CardLayout)(mainPane.getLayout());
         cl.show(mainPane, processingCard);
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
 			public boolean dispatchKeyEvent(KeyEvent e) {

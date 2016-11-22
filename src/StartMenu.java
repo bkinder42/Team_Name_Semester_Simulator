@@ -186,7 +186,7 @@ public class StartMenu {
 		songs = loadSongs();
 		System.out.println(songs.keySet());
 		System.out.println(songs.get("Menu"));
-		MusicThread musicThread = new MusicThread(songs.get("Menu"), soundConfig);
+		final MusicThread musicThread = new MusicThread(songs.get("Menu"), soundConfig);
 		musicThread.start();
 
 		startMenu = new JFrame();
@@ -217,7 +217,7 @@ public class StartMenu {
 		btnStart.setBounds(309, 147, 146, 35);
 		btnStart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				MainSimulator sim = new MainSimulator();
+				final MainSimulator sim = new MainSimulator();
 				sim.run(conConfig, userAccount, songs, musicThread);
 				startMenu.setVisible(false);
 				Thread playing = new Thread(new Runnable() {
@@ -252,7 +252,7 @@ public class StartMenu {
 		TransparentJButton btnSettings = new TransparentJButton("Settings");
 		btnSettings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				SettingsFrame settings = new SettingsFrame(musicThread);
+				final SettingsFrame settings = new SettingsFrame(musicThread);
 				settings.show();
 				startMenu.setVisible(false);
 				Thread settingsListener = new Thread(new Runnable() {
@@ -347,7 +347,7 @@ public class StartMenu {
 			btnAccount.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					startMenu.setVisible(false);
-					LoginFrame loginFrame = new LoginFrame(conConfig);
+					final LoginFrame loginFrame = new LoginFrame(conConfig);
 					loginFrame.show();
 					Thread loginManager = new Thread(new Runnable() {
 						public void run() {
