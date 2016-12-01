@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import java.awt.geom.Arc2D;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.xml.soap.Text;
 
@@ -93,14 +94,19 @@ public class MainSimulator extends PApplet {
     private final float MIN_CREDITS = 12;
     private final float MAX_CREDITS = 24;
     private final float MAX_WORK = 40;
+    
+    public MainSimulator(){
+    	super();
+    }
 
     public void run(HashMap<String, String> conMap, Account userAcnt, HashMap<String, ArrayList<String>> songLists, MusicThread soundThread) {
-    	soundThread.getPlayer().stop();
+    	soundThread.getPlayer().stop();//Pauses the soundtrack from the main menu
     	this.songLists = songLists;
-    	playing = true;
+    	playing = true;//Control variable for the multiwindow threading
         //create your JFrame
-        gameFrame = new JFrame("JFrame Test");
+        gameFrame = new JFrame("Main Game");
         gameFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        //Custom closing function to allow transition back to main menu
 		gameFrame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
@@ -127,19 +133,20 @@ public class MainSimulator extends PApplet {
         gameFrame.add(sidePanel, BorderLayout.EAST);
 
         //make your JFrame visible
-        gameFrame.setSize(1024 + 500, 768);
+        gameFrame.setSize(1030 + 500, 768);
         gameFrame.setVisible(true);
         
         //Builds Card Layout and Panels
         JPanel processingPanel = new JPanel();
-        processingPanel.add(smoothCanvas);
-        JPanel mainPane = new JPanel();
-        SQLCmdLine sqlConsole = new SQLCmdLine(conMap, mainPane);
-        mainPane.setLayout(new CardLayout());
-        mainPane.add(processingPanel, processingCard);
-        mainPane.add(sqlConsole, sqlCard);
-        CardLayout cl = (CardLayout)(mainPane.getLayout());
-        cl.show(mainPane, processingCard);
+        processingPanel.add(smoothCanvas);//Adds the actual processing function
+        JPanel mainPane = new JPanel();//The main pane, has a card layout for controlling stiching gameplay element visible
+        SQLCmdLine sqlConsole = new SQLCmdLine(conMap, mainPane);//Pane to run SQL Commands
+        mainPane.setLayout(new CardLayout());//Allows multiple panes to be "stacked" only shows top,
+        mainPane.add(processingPanel, processingCard); //Adds the processingPanel and assigns it a reference string
+        mainPane.add(sqlConsole, sqlCard);//Adds the sql panel and adds a reference string
+        CardLayout cl = (CardLayout)(mainPane.getLayout());//Creates a reference cardlayout for performing functions
+        cl.show(mainPane, processingCard);//Shows the default panel, the processing panel
+        //Creates a universal keyboard listener for switching panels
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
 			public boolean dispatchKeyEvent(KeyEvent e) {
 				if (processingPanel.isVisible()) 
@@ -147,6 +154,7 @@ public class MainSimulator extends PApplet {
 						if (e.getKeyCode() == KeyEvent.VK_C && e.isShiftDown() && e.isControlDown()){ 
 							cl.show(mainPane, sqlCard);
 							sqlConsole.setExit(false);
+							//Creates a thread to handle the listening for the exit from SQL panel
 							class SQLExitThread extends Thread{
 								public SQLExitThread(){
 									super();
@@ -159,10 +167,13 @@ public class MainSimulator extends PApplet {
 									this.stop();
 								}
 							}
+							//Builds then starts the thread
 							SQLExitThread sqlExit = new SQLExitThread();
 							sqlExit.start();
+							//Returns false to free the event for dispatching elsewhere
 							return false;
 						}
+				//Returns false to free the event for dispatching elsewhere
 				return false;
 			}
 		});
