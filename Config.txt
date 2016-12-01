@@ -7,7 +7,7 @@ final_project
 user_accounts
 scoreboard
 //Sound(Int): Level/Language(English[0], Spanish[1])
-100
+0
 0
 //J4v4 Server Port Num
 1235

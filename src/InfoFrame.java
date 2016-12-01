@@ -42,6 +42,7 @@ public class InfoFrame extends JFrame{
 	 * Create the frame.
 	 */
 	public InfoFrame() {
+		//Creates a small frame with some text for information on the SQLDatabase
 		setUndecorated(true);
 		setAlwaysOnTop(true);
 		setAutoRequestFocus(false);
