@@ -397,7 +397,6 @@ public class MainSimulator extends PApplet {
             wealthTotal += negative;
             if (wealthTotal <= 0){
                 wealthTotal = 0;
-                System.out.println("YOU BROKE BRUH");
             }
             wealthWeekly = 0;
             //happyWeekly = .25f*partyTime; probably not used
