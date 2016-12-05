@@ -375,25 +375,25 @@ public class MainSimulator extends PApplet {
         //work
         wealthWeekly += (5*workHours);
         if(workHours >= 21){
-            happyWeekly -= 1*workHours;
-            gradeWeekly -= .5*workHours;
-        } else happyWeekly -= .5*workHours;
+            happyWeekly -= .5*workHours;
+            gradeWeekly -= .25*workHours;
+        } else happyWeekly -= .25*workHours;
         if(wealthWeekly >= 55){ happyWeekly += 5; }
         //class time
-        happyWeekly -= 1*classTime;
-        gradeWeekly += .5*classTime;
+        happyWeekly -= .5*classTime;
+        gradeWeekly += .25*classTime;
         //study
-        gradeWeekly += .5*studyTime;
-        happyWeekly -= .5*studyTime;
+        gradeWeekly += .25*studyTime;
+        happyWeekly -= .25*studyTime;
         //academic visit
-        gradeWeekly += .5*academicVisit;
-        happyWeekly -= .5*academicVisit;
+        gradeWeekly += .25*academicVisit;
+        happyWeekly -= .25*academicVisit;
         //Leisure time
         if(partyTime <= 0) {gradeWeekly -= 50;}
-        gradeWeekly -= 3*partyTime;
-        wealthWeekly -= 6*partyTime;
-        if ((wealthWeekly - 6*partyTime) <= 0 ){
-            negative = (wealthWeekly -= 7*partyTime);
+        gradeWeekly -= 1.5*partyTime;
+        wealthWeekly -= 3*partyTime;
+        if ((wealthWeekly - 3*partyTime) <= 0 ){
+            negative = (wealthWeekly -= 4.5*partyTime);
             wealthTotal += negative;
             if (wealthTotal <= 0){
                 wealthTotal = 0;
@@ -401,7 +401,7 @@ public class MainSimulator extends PApplet {
             }
             wealthWeekly = 0;
             //happyWeekly = .25f*partyTime; probably not used
-        } else happyWeekly += 3*partyTime;
+        } else happyWeekly += 1.5*partyTime;
         // happy check
         if (happyWeekly <= 0){ happyWeekly = 0;}
         if (gradeWeekly <= 0){ gradeWeekly = 0;}
@@ -455,6 +455,14 @@ public class MainSimulator extends PApplet {
 
 
     }
+
+    public int emotionValue(){
+        if (happyWeekly >= 75){return 2;}
+        if (happyWeekly < 75 && happyWeekly >= 45){return 1;}
+        if (happyWeekly < 45){return 0;}
+        else return 0;
+    }
+
     public void creditSelect() {
         float cred = Float.parseFloat(creditHoursField.getText());
         if (cred >= MIN_CREDITS && cred <= MAX_CREDITS) {

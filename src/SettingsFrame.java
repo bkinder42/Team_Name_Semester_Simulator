@@ -57,7 +57,8 @@ public class SettingsFrame extends JFrame {
 		contentPane.add(settingsPanel, BorderLayout.CENTER);
 		settingsPanel.setLayout(null);
 
-		JSlider volumeSlide = new JSlider();
+
+		final JSlider volumeSlide = new JSlider();
 		volumeSlide.setToolTipText("Volume Level");
 		volumeSlide.setOpaque(false);
 		volumeSlide.setBounds(149, 172, 200, 43);
@@ -80,7 +81,7 @@ public class SettingsFrame extends JFrame {
 		lblMusic.setBounds(178, 125, 139, 26);
 		settingsPanel.add(lblMusic);
 		
-		JButton btnFinished = new JButton("Finished");
+		final JButton btnFinished = new JButton("Finished");
 		btnFinished.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		btnFinished.setForeground(new Color(255, 215, 0));
 		btnFinished.setContentAreaFilled(false);
@@ -103,7 +104,7 @@ public class SettingsFrame extends JFrame {
 		});
 		settingsPanel.add(btnFinished);
 		
-		JButton btnCancel = new JButton("Cancel");
+		final JButton btnCancel = new JButton("Cancel");
 		btnCancel.setContentAreaFilled(false);
 		btnCancel.setForeground(new Color(255, 215, 0));
 		btnCancel.setFont(new Font("Tahoma", Font.PLAIN, 24));
