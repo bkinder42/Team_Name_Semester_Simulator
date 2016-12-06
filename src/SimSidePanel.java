@@ -81,26 +81,7 @@ public class SimSidePanel extends JPanel {
 		userInfo.setOpaque(true);
 		userInfo.setColumns(10);
 		userInfo.setFont(new Font("Takoma", Font.BOLD, 20));
-
-		JPanel chat = new JPanel();
-		chat.setBorder(new LineBorder(new Color(0, 0, 0), 3));
-		chat.setBackground(Color.WHITE);
-		add(chat);
-		chat.setLayout(new BorderLayout(0, 0));
-
-		JTextArea textArea = new JTextArea();
-		textArea.setOpaque(false);
-		textArea.setFont(new Font("Takoma" , Font.PLAIN, 40));
-		textArea.setForeground(Color.RED);
-		textArea.setText("Needs testing\nTO COME");
-		chat.add(textArea, BorderLayout.CENTER);
-
-		textField = new JTextField();
-		textField.setBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)));
-		textField.setOpaque(false);
-		chat.add(textField, BorderLayout.SOUTH);
-		textField.setColumns(10);
-
+		
 		runContentUpdaters();
 	}
 
