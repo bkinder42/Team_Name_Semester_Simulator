@@ -354,8 +354,8 @@ public class MainSimulator extends PApplet {
             text("Ranges:", 200, 450);
             text("Work:    " + "0 - 40", 200, 515);
             text("Class Time:    " + "0 - Max Credits", 200, 530);
-            text("Study Time:    " + "0 - Twice Credits", 200, 545);
-            text("Academic Time:    " + "0 - Half Study Time", 200, 560);
+            text("Study Time:    " + "0 - 2x Credits", 200, 545);
+            text("Academic Time:    " + "0 - 1/2x Study Time", 200, 560);
             text("Leisure Time:    " + "0 - " + math, 200, 575);
         } else {
             text("Final Happiness: " + happySum, 500, 300);
