@@ -87,16 +87,11 @@ public class SQLConnection {
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(update);
-			ResultSet data = stmt.executeQuery(query);
-			id = data.getInt("id");
-			stmt.close();
-			return true;
+			return login(username, password);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return false;
-		} finally {
-
 		}
 	}
 
