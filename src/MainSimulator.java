@@ -41,6 +41,9 @@ public class MainSimulator extends PApplet {
     private static JFrame gameFrame;
     public final String processingCard = "Processing", sqlCard = "Sql";
     private boolean playing;
+    private boolean saving;
+    private HashMap<String, String> conMap;
+    private Account userAcc;
     
     //Sound Vars
     private HashMap<String, ArrayList<String>> songLists;
@@ -100,9 +103,12 @@ public class MainSimulator extends PApplet {
     }
 
     public void run(HashMap<String, String> conMap, Account userAcnt, HashMap<String, ArrayList<String>> songLists, MusicThread soundThread) {
+    	this.conMap = conMap;
+    	this.userAcc = userAcnt;
     	soundThread.getPlayer().stop();//Pauses the soundtrack from the main menu
     	this.songLists = songLists;
     	playing = true;//Control variable for the multiwindow threading
+    	saving = false;
         //create your JFrame
         gameFrame = new JFrame("Main Game");
         gameFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -179,6 +185,21 @@ public class MainSimulator extends PApplet {
 		});
         gameFrame.setResizable(false);
         gameFrame.add(mainPane);
+    	Thread musicController = new Thread(new Runnable(){
+    		public void run(){
+    			try{
+    				int emotion = emotionValue();
+    				switch(emotion){
+    				case 0: soundThread.getPlayer().setSongs(songLists.get("Sad")); break;
+    				case 1: soundThread.getPlayer().setSongs(songLists.get("Neutral")); break;
+    				case 2: soundThread.getPlayer().setSongs(songLists.get("Happy"));; break;
+    				}
+    			}catch(NullPointerException e){
+    				System.out.println("Temp null");
+    			}
+    		}
+    	});
+    	musicController.start();
 
         //start your sketch
         ps.startThread();
@@ -342,6 +363,14 @@ public class MainSimulator extends PApplet {
             studyTimeField.lock();
             partyTimeField.lock();
             classTimeField.lock();
+            JFrame top = new JFrame();
+            top.setAlwaysOnTop(true);
+            top.setVisible(false);
+            int exit = -1;
+            do{
+            exit = JOptionPane.showConfirmDialog(top, "Exit Now?");
+            }while(exit != JOptionPane.YES_OPTION);
+            setPlaying(false);
         }
     }
     public boolean isSchoolOver() {
@@ -575,5 +604,26 @@ public class MainSimulator extends PApplet {
 	}
 	public void setPlaying(boolean playing) {
 		this.playing = playing;
+	}
+	public void exit(){
+		SQLConnection con = new SQLConnection(conMap);
+		if(userAcc != null){
+			if(userAcc.getId() > 0){
+				con.setHighscore((int)scoreTally(), userAcc.getId());
+			}
+		}
+		gameFrame.setVisible(false);
+		int save = JOptionPane.showOptionDialog(null, "Save Game?", "Save", 0, 0, null, new String[]{"Save", "Don't Save"}, 0);
+		if(save == 0){
+			saving = true;
+		}else{
+			saving = false;
+		}
+	}
+	public void setSaving(boolean saving){
+		this.saving = saving;
+	}
+	public boolean getSaving(){
+		return saving;
 	}
 }
