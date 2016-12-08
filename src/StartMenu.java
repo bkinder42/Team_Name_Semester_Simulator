@@ -303,6 +303,7 @@ public class StartMenu {
 							saveFile = saveFilePick.getSelectedFile();
 							try {
 								PrintWriter writer = new PrintWriter(new FileWriter(saveFile));
+								System.out.println("Wealth" + sim.getWealth());
 								writer.write(sim.getWealth() + "\n");
 								writer.write(sim.getCreditHours() + "\n");
 								writer.write(sim.getGrades() + "\n");
@@ -316,7 +317,8 @@ public class StartMenu {
 
 						sim.getFrame().dispose();
 						startMenu.setVisible(true);
-						musicThread.setSongs(songs.get("Menu"));
+						musicThread.getPlayer().stop();
+						musicThread.getPlayer().setSongs(songs.get("Menu"));
 						musicThread.getPlayer().play();
 
 					}
@@ -373,7 +375,7 @@ public class StartMenu {
 		btnSettings.setBackground(new Color(btnSettings.getBackground().getRed(), btnSettings.getBackground().getBlue(),
 				btnSettings.getBackground().getGreen(), opacity));
 		btnSettings.setBounds(309, 228, 141, 35);
-		contentPane.add(btnSettings);
+//		contentPane.add(btnSettings);
 
 		// Exit button and properties
 		TransparentJButton btnExit = new TransparentJButton("Exit");

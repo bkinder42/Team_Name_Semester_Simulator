@@ -199,7 +199,9 @@ public class MainSimulator extends PApplet {
     			}
     		}
     	});
+		soundThread.getPlayer().setSongs(songLists.get("Happy"));
     	musicController.start();
+    	soundThread.getPlayer().play();
 
         //start your sketch
         ps.startThread();
@@ -367,10 +369,7 @@ public class MainSimulator extends PApplet {
             top.setAlwaysOnTop(true);
             top.setVisible(false);
             int exit = -1;
-            do{
-            exit = JOptionPane.showConfirmDialog(top, "Exit Now?");
-            }while(exit != JOptionPane.YES_OPTION);
-            setPlaying(false);
+            JOptionPane.showMessageDialog(null, "Close To Return to Menu");
         }
     }
     public boolean isSchoolOver() {
