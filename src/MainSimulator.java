@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.xml.soap.Text;
 
+import controlP5.Slider;
 import controlP5.CColor;
 import controlP5.ControlP5;
 import controlP5.Textfield;
@@ -155,9 +156,9 @@ public class MainSimulator extends PApplet {
         //Creates a universal keyboard listener for switching panels
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
 			public boolean dispatchKeyEvent(KeyEvent e) {
-				if (processingPanel.isVisible()) 
-					if (e.getID() == KeyEvent.KEY_PRESSED) 
-						if (e.getKeyCode() == KeyEvent.VK_C && e.isShiftDown() && e.isControlDown()){ 
+				if (processingPanel.isVisible())
+					if (e.getID() == KeyEvent.KEY_PRESSED)
+						if (e.getKeyCode() == KeyEvent.VK_C && e.isShiftDown() && e.isControlDown()){
 							cl.show(mainPane, sqlCard);
 							sqlConsole.setExit(false);
 							//Creates a thread to handle the listening for the exit from SQL panel
@@ -310,7 +311,7 @@ public class MainSimulator extends PApplet {
         cp5.addButton("nextWeek").setSize(50, 20).setPosition(900, 700).setLabel("Next Week");
         cp5.addButton("weekStart").setSize(50, 20).setPosition(900, 500).setLabel("Start Week");
         cp5.addButton("creditSelect").setSize(50, 20).setPosition(330, fieldRow1x - 15).setLabel("Credits");
-
+        cp5.addSlider("Test Slider").setPosition(500,500).setRange(0,100);
 
 
     }
@@ -350,12 +351,12 @@ public class MainSimulator extends PApplet {
             text("All your money: " + wealthTotal, 500, 500);
             text("Week: " + week, 500, 450);
             //Below is not working properly
-//            text("Ranges:", 200, 450);
-//            text("Work:    " + "0 - 40", 200, 515);
-//            text("Class Time:    " + "0 - " + creditHours, 200, 530);
-//            text("Study Time:    " + "0 - " + 2 * creditHours, 200, 545);
-//            text("Academic Time:    " + "0 - " + .5 * study, 200, 560);
-//            text("Leisure Time:    " + "0 - " + math, 200, 575);
+            text("Ranges:", 200, 450);
+            text("Work:    " + "0 - 40", 200, 515);
+            text("Class Time:    " + "0 - Max Credits", 200, 530);
+            text("Study Time:    " + "0 - Twice Credits", 200, 545);
+            text("Academic Time:    " + "0 - Half Study Time", 200, 560);
+            text("Leisure Time:    " + "0 - " + math, 200, 575);
         } else {
             text("Final Happiness: " + happySum, 500, 300);
             text("Final Grades: " + gradeSum, 500, 400);
@@ -365,6 +366,7 @@ public class MainSimulator extends PApplet {
             studyTimeField.lock();
             partyTimeField.lock();
             classTimeField.lock();
+            scoreTally();
             JFrame top = new JFrame();
             top.setAlwaysOnTop(true);
             top.setVisible(false);
@@ -378,7 +380,6 @@ public class MainSimulator extends PApplet {
             happyAverage /= week;
             gradeSum = gradeAverage;
             gradeAverage /= week;
-            scoreTally();
             return true;
         } else return false;
 
@@ -424,7 +425,7 @@ public class MainSimulator extends PApplet {
             gradeWeekly -= 50;
         }
         gradeWeekly -= 1.5 * partyTime;
-        wealthWeekly -= 3 * partyTime;
+        wealthWeekly -= 1 * partyTime;
         if ((wealthWeekly - 3 * partyTime) <= 0) {
             negative = (wealthWeekly -= 4.5 * partyTime);
             wealthTotal += negative;

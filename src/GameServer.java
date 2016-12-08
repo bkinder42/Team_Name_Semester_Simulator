@@ -36,7 +36,7 @@ public class GameServer {
 		frame.setBounds(0, 0, 500, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JButton btnServer = new JButton();
+		final JButton btnServer = new JButton();
 		btnServer.setText("Server Off");
 		btnServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -50,7 +50,7 @@ public class GameServer {
 		});
 		frame.add(btnServer, 0, 0);
 
-		JButton btnSqlCon = new JButton();
+		final JButton btnSqlCon = new JButton();
 		btnSqlCon.setText("SQL Connection Off");
 		btnSqlCon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

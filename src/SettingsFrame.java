@@ -69,7 +69,7 @@ public class SettingsFrame extends JFrame {
 			public void stateChanged(ChangeEvent arg0) {
 				double setVolume = volumeSlide.getValue() / 10.0;
 				volume = volumeSlide.getValue();
-				playerThread.getPlayer().changeVolume(setVolume);
+//				playerThread.getPlayer().changeVolume(setVolume);
 			}
 		});
 		settingsPanel.add(volumeSlide);
