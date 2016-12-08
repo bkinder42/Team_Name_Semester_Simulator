@@ -262,7 +262,8 @@ public class StartMenu {
 			public void actionPerformed(ActionEvent arg0) {
 				// Builds the main simulator
 				MainSimulator sim = new MainSimulator();
-				int loadNew = JOptionPane.showOptionDialog(null, "Load or New Game", "Load Option", 0, 0, null,
+				int loadNew = 0;
+				loadNew = JOptionPane.showOptionDialog(null, "Load or New Game", "Load Option", 1, 1, null,
 						new String[] { "New Game", "Load Game" }, 0);
 				if (loadNew == 1) {
 					JFileChooser filePick = new JFileChooser();

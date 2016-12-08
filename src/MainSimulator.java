@@ -369,11 +369,10 @@ public class MainSimulator extends PApplet {
             top.setAlwaysOnTop(true);
             top.setVisible(false);
             int exit = -1;
-            JOptionPane.showMessageDialog(null, "Close To Return to Menu");
         }
     }
     public boolean isSchoolOver() {
-        if (week > 15) {
+        if (week > 1) {
             happySum = happyAverage;
             happyAverage /= week;
             gradeSum = gradeAverage;
