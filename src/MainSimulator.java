@@ -81,8 +81,8 @@ public class MainSimulator extends PApplet {
     private int fieldRow2x;
     private int textRow1x;
     private int textRow2x;
-    private int week;
-    private int weekNum;
+    public int week;
+    public int weekNum;
     private float brkTestHappy = 96; //int to stand in for happiness until merged with Aaron's code
     private String errorText;
 
@@ -350,6 +350,7 @@ public class MainSimulator extends PApplet {
             happyAverage /= week;
             gradeSum = gradeAverage;
             gradeAverage /= week;
+            scoreTally();
             return true;
         } else return false;
 
@@ -365,50 +366,94 @@ public class MainSimulator extends PApplet {
         week += 1;
     }
 
-    public void mathForWeek(){
+    public void mathForWeek() {
         float negative;
         //credits
-        if(creditHours >= 12){
-            happyWeekly -= 1.25f*creditHours;
-            gradeWeekly -= 1.5f*creditHours;
+        if (creditHours >= 12) {
+            happyWeekly -= 1.25f * creditHours;
+            gradeWeekly -= 1.5f * creditHours;
         }
         //work
-        wealthWeekly += (5*workHours);
-        if(workHours >= 21){
-            happyWeekly -= .5*workHours;
-            gradeWeekly -= .25*workHours;
-        } else happyWeekly -= .25*workHours;
-        if(wealthWeekly >= 55){ happyWeekly += 5; }
+        wealthWeekly += (5 * workHours);
+        if (workHours >= 21) {
+            happyWeekly -= .5 * workHours;
+            gradeWeekly -= .25 * workHours;
+        } else happyWeekly -= .25 * workHours;
+        if (wealthWeekly >= 55) {
+            happyWeekly += 5;
+        }
         //class time
-        happyWeekly -= .5*classTime;
-        gradeWeekly += .25*classTime;
+        happyWeekly -= .5 * classTime;
+        gradeWeekly += .25 * classTime;
         //study
-        gradeWeekly += .25*studyTime;
-        happyWeekly -= .25*studyTime;
+        gradeWeekly += .25 * studyTime;
+        happyWeekly -= .25 * studyTime;
         //academic visit
-        gradeWeekly += .25*academicVisit;
-        happyWeekly -= .25*academicVisit;
+        gradeWeekly += .25 * academicVisit;
+        happyWeekly -= .25 * academicVisit;
         //Leisure time
-        if(partyTime <= 0) {gradeWeekly -= 50;}
-        gradeWeekly -= 1.5*partyTime;
-        wealthWeekly -= 3*partyTime;
-        if ((wealthWeekly - 3*partyTime) <= 0 ){
-            negative = (wealthWeekly -= 4.5*partyTime);
+        if (partyTime <= 0) {
+            gradeWeekly -= 50;
+        }
+        gradeWeekly -= 1.5 * partyTime;
+        wealthWeekly -= 3 * partyTime;
+        if ((wealthWeekly - 3 * partyTime) <= 0) {
+            negative = (wealthWeekly -= 4.5 * partyTime);
             wealthTotal += negative;
-            if (wealthTotal <= 0){
+            if (wealthTotal <= 0) {
                 wealthTotal = 0;
             }
             wealthWeekly = 0;
             //happyWeekly = .25f*partyTime; probably not used
-        } else happyWeekly += 1.5*partyTime;
+        } else happyWeekly += 1.5 * partyTime;
         // happy check
-        if (happyWeekly <= 0){ happyWeekly = 0;}
-        if (gradeWeekly <= 0){ gradeWeekly = 0;}
-
-
-
-
+        if (happyWeekly <= 0) {
+            happyWeekly = 0;
+        }
+        if (gradeWeekly <= 0) {
+            gradeWeekly = 0;
+        }
     }
+    public float scoreTally(){
+        float score = (happyAverage + gradeAverage + (wealthTotal / 1000));
+        return score;
+    }
+    //GETTERS
+    public float getWealth(){
+        return wealthTotal;
+    }
+    public float getCreditHours(){
+        return creditHours;
+    }
+    public float getGrades(){
+        return gradeSum;
+    }
+    public float getHappy(){
+        return happySum;
+    }
+    public float getWeek(){
+        return week;
+    }
+
+    //////
+    //SETTERS
+    public void setWealth(int wealthTotal) {
+        this.wealthTotal = wealthTotal;
+    }
+    public void setCreditHours(int creditHours) {
+        this.creditHours = creditHours;
+    }
+    public void setGradeSum(int gradeSum) {
+        this.gradeSum = gradeSum;
+    }
+    public void setHappySum(int happySum) {
+        this.happySum = happySum;
+    }
+    public void setWeek(int week) {
+        this.week = week;
+    }
+    ////
+
     private boolean numberCheck() {
         study = Float.parseFloat(studyTimeField.getText());
         math = (HOURS_MAX - creditHours - work - classt - study - aca);
