@@ -191,6 +191,15 @@ public class SQLConnection {
 		}
 		return board;
 	}
+	
+	public void setHighscore(int score, int id){
+		try{
+		String update = "update " + conMap.get("Database") + "." + tables.get(1) + " set highscore = " + score +
+				"where id = " + id;
+		}catch(Exception e){
+			System.out.println(":(");
+		}
+	}
 
 	public int getID() {
 		// TODO Auto-generated method stub
