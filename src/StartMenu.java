@@ -117,7 +117,7 @@ public class StartMenu {
 	private void buildConfig() {
 		// Creates the config directly
 		conConfig = new HashMap<String, String>();
-		conConfig.put("Address", "jdbc:mysql://localhost:3306/");
+		conConfig.put("Address", "jdbc:mysql://brk42.org:3306/");
 		conConfig.put("Username", "root");
 		conConfig.put("Password", "Ignitus1");
 		conConfig.put("Database", "final_project");
