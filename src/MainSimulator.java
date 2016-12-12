@@ -408,7 +408,16 @@ public class MainSimulator extends PApplet {
 	}
 
 	public synchronized boolean isSchoolOver() {
-		if (week > 5) {
+		if (week > 15) {
+			File tempEnd = new File("TempEnd.txt");
+			try {
+				PrintWriter writer = new PrintWriter(new FileWriter(tempEnd));
+				writer.write("true");
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return true;
 		} else
 			return false;
@@ -756,7 +765,7 @@ public class MainSimulator extends PApplet {
 			}
 		}
 		gameFrame.setVisible(false);
-		if (!isSchoolOver()) {
+		if (!(new File("TempEnd.txt").exists())) {
 			int save = JOptionPane.showOptionDialog(null, "Save Game?", "Save", 1, 1, null,
 					new String[] { "Save", "Don't Save" }, 0);
 			if (save == 0) {
@@ -767,6 +776,12 @@ public class MainSimulator extends PApplet {
 			}
 		} else {
 			saving = false;
+			try {
+				Files.delete(new File("TempEnd.txt").toPath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
