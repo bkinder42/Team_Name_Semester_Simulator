@@ -319,7 +319,13 @@ public class MainSimulator extends PApplet {
 		background(128, 0, 128);
 		cp5 = new ControlP5(this);
 		fill(255);
+        cp5.addButton("nextWeek").setSize(50, 20).setPosition(900, 700).setLabel("Next Week");
+        cp5.addButton("weekStart").setSize(50, 20).setPosition(900, 500).setLabel("Start Week");
+        cp5.addButton("creditSelect").setSize(50, 20).setPosition(330, fieldRow1x - 15).setLabel("Credits");
 
+
+	}
+	public void allThePrettyThings(){
         text("Credit Hours: ", textRow1x, 115);
         text("Work Hours: ", textRow1x, 165);
         text("Class Time: ", textRow1x, 215);
@@ -333,6 +339,12 @@ public class MainSimulator extends PApplet {
         text(errorText, 500, 500);
 
 
+        text("Happiness: " + happyWeekly, 500, 300);
+        text("Weekly Wealth: " + wealthWeekly, 500, 350);
+        text("Weekly Grades: " + gradeWeekly, 500, 400);
+        text("All your money: " + wealthTotal, 500, 500);
+        text("Week: " + week, 500, 450);
+        text("Class Time: " + "0 - " + creditHours, 200, 530);
 
 
         text("Ranges:", 200, 450);
@@ -361,30 +373,11 @@ public class MainSimulator extends PApplet {
                 .setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
                 .setFont(font);
 
-        cp5.addButton("nextWeek").setSize(50, 20).setPosition(900, 700).setLabel("Next Week");
-        cp5.addButton("weekStart").setSize(50, 20).setPosition(900, 500).setLabel("Start Week");
-        cp5.addButton("creditSelect").setSize(50, 20).setPosition(330, fieldRow1x - 15).setLabel("Credits");
-
-	}
+    }
 
 	public void draw() {
-		if (isSchoolOver()){
-			JFrame end = new JFrame();
-			end.setAlwaysOnTop(true);
-			end.setSize(1030 + 500, 768);
-			end.setVisible(true);
-			text("Final Happiness: " + happySum, 500, 300);
-			text("Final Grades: " + gradeSum, 500, 400);
-			text("Final Wealth: " + wealthTotal, 500, 350);
-			theEnd();
-		}
-		else { text("Happiness: " + happyWeekly, 500, 300);
-		text("Weekly Wealth: " + wealthWeekly, 500, 350);
-		text("Weekly Grades: " + gradeWeekly, 500, 400);
-		text("All your money: " + wealthTotal, 500, 500);
-		text("Week: " + week, 500, 450);
-		text("Class Time: " + "0 - " + creditHours, 200, 530); }
-
+        background(128, 0, 128);
+		weeklyRun();
 	}
 
 
@@ -405,6 +398,8 @@ public class MainSimulator extends PApplet {
 
 
 	public synchronized void weeklyRun() {
+		if (isSchoolOver()){theEnd();}
+		else allThePrettyThings();
 
 	}
 
@@ -423,8 +418,9 @@ public class MainSimulator extends PApplet {
 
 	}
 	public void endWeekStats(){
-        // other things went here
-        //probably not needed
+        text("Final Happiness: " + happySum, 500, 300);
+        text("Final Grades: " + gradeSum, 500, 400);
+        text("Final Wealth: " + wealthTotal, 500, 350);
 //        workHoursField.clear();
 //        academicVisitField.clear();
 //        studyTimeField.clear();
@@ -434,7 +430,6 @@ public class MainSimulator extends PApplet {
         top.setAlwaysOnTop(true);
         top.setVisible(false);
         int exit = -1;
-        noLoop();
     }
 
 	public void exportData() {
@@ -453,16 +448,6 @@ public class MainSimulator extends PApplet {
 			e.printStackTrace();
 		}
 	}
-
-//	public void updaterino(){
-//		text("Happiness: " + happyWeekly, 500, 300);
-//		text("Weekly Wealth: " + wealthWeekly, 500, 350);
-//		text("Weekly Grades: " + gradeWeekly, 500, 400);
-//		text("All your money: " + wealthTotal, 500, 500);
-//		text("Week: " + week, 500, 450);
-//		text("Class Time: " + "0 - " + creditHours, 200, 530);
-//
-//	}
 
 	public synchronized void weeklyReset() {
 		happySum += happyWeekly;
@@ -657,7 +642,6 @@ public class MainSimulator extends PApplet {
 			partyTimeField.lock();
 			mathForWeek();
 			randomEventerator();
-			//updaterino();
 		} else
             JOptionPane.showMessageDialog(null, "Please check your ranges.");
 
@@ -693,7 +677,6 @@ public class MainSimulator extends PApplet {
 			academicVisitField.unlock();
 			partyTimeField.unlock();
 			weeklyReset();
-			//updaterino();
 		} else
 			JOptionPane.showMessageDialog(null, "Please check your ranges.");
 	}
@@ -713,8 +696,6 @@ public class MainSimulator extends PApplet {
             happyWeekly = 0;
             gradeWeekly = 0;
             wealthWeekly = 0;
-            wealthTotal = 0;
-
         }
 		else if (randomPositiveGenerator() > 60 && randomPositiveGenerator() < 65){
 			JOptionPane.showMessageDialog(null, "A professor offers an easy extra credit assignment. Your grade and happiness have increased slightly.");
