@@ -408,8 +408,8 @@ public class MainSimulator extends PApplet {
 	}
 
 	public synchronized boolean isSchoolOver() {
+		File tempEnd = new File("TempEnd.txt");
 		if (week > 15) {
-			File tempEnd = new File("TempEnd.txt");
 			try {
 				PrintWriter writer = new PrintWriter(new FileWriter(tempEnd));
 				writer.write("true");
@@ -419,8 +419,18 @@ public class MainSimulator extends PApplet {
 				e.printStackTrace();
 			}
 			return true;
-		} else
+		} else{
+			PrintWriter writer;
+			try {
+				writer = new PrintWriter(new FileWriter(tempEnd));
+				writer.write("false");
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return false;
+		}
 	}
 	public void endWeekMath(){
 		happySum = happyAverage;
@@ -765,7 +775,18 @@ public class MainSimulator extends PApplet {
 			}
 		}
 		gameFrame.setVisible(false);
-		if (!(new File("TempEnd.txt").exists())) {
+		boolean gameComplete = false;
+		try {
+			Scanner inFile = new Scanner(new File("TempEnd.txt"));
+			if(inFile.hasNextBoolean())
+				gameComplete = inFile.nextBoolean();
+			System.out.println("Game Complete Post File: " + gameComplete);
+			inFile.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		if (!gameComplete) {
 			int save = JOptionPane.showOptionDialog(null, "Save Game?", "Save", 1, 1, null,
 					new String[] { "Save", "Don't Save" }, 0);
 			if (save == 0) {
