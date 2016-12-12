@@ -414,19 +414,22 @@ public class MainSimulator extends PApplet {
 	public void endWeekStats(){
         JFrame end = new JFrame();
         end.setAlwaysOnTop(true);
+		end.setSize(1030 + 500, 768);
         end.setVisible(true);
         text("Final Happiness: " + happySum, 500, 300);
         text("Final Grades: " + gradeSum, 500, 400);
         text("Final Wealth: " + wealthTotal, 500, 350);
-        workHoursField.clear();
-        academicVisitField.clear();
-        studyTimeField.clear();
-        partyTimeField.clear();
-        classTimeField.clear();
+        //probably not needed
+//        workHoursField.clear();
+//        academicVisitField.clear();
+//        studyTimeField.clear();
+//        partyTimeField.clear();
+//        classTimeField.clear();
         JFrame top = new JFrame();
         top.setAlwaysOnTop(true);
         top.setVisible(false);
         int exit = -1;
+        noLoop();
     }
 
 	public void exportData() {
