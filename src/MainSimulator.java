@@ -392,22 +392,8 @@ public class MainSimulator extends PApplet {
 
 
 	public synchronized void weeklyRun() {
-		if (!isSchoolOver()) {
-			regularWeekInfo();
-		} else {
-			text("Final Happiness: " + happySum, 500, 300);
-			text("Final Grades: " + gradeSum, 500, 400);
-			text("Final Wealth: " + wealthTotal, 500, 350);
-			workHoursField.clear();
-			academicVisitField.clear();
-			studyTimeField.clear();
-			partyTimeField.clear();
-			classTimeField.clear();
-			JFrame top = new JFrame();
-			top.setAlwaysOnTop(true);
-			top.setVisible(false);
-			int exit = -1;
-		}
+		if (isSchoolOver()) {endWeekStats();}
+		else if (!(isSchoolOver())) regularWeekInfo();
 	}
 
 	public synchronized boolean isSchoolOver() {
@@ -426,6 +412,20 @@ public class MainSimulator extends PApplet {
 		scoreTally();
 
 	}
+	public void endWeekStats(){
+        text("Final Happiness: " + happySum, 500, 300);
+        text("Final Grades: " + gradeSum, 500, 400);
+        text("Final Wealth: " + wealthTotal, 500, 350);
+        workHoursField.clear();
+        academicVisitField.clear();
+        studyTimeField.clear();
+        partyTimeField.clear();
+        classTimeField.clear();
+        JFrame top = new JFrame();
+        top.setAlwaysOnTop(true);
+        top.setVisible(false);
+        int exit = -1;
+    }
 
 	public void exportData() {
 		try {
