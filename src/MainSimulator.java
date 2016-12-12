@@ -161,12 +161,12 @@ public class MainSimulator extends PApplet {
 		gameFrame.setVisible(true);
 
 		// Builds Card Layout and Panels
-		JPanel processingPanel = new JPanel();
+		final JPanel processingPanel = new JPanel();
 		processingPanel.add(smoothCanvas);// Adds the actual processing function
-		JPanel mainPane = new JPanel();// The main pane, has a card layout for
+		final JPanel mainPane = new JPanel();// The main pane, has a card layout for
 										// controlling stiching gameplay element
 										// visible
-		SQLCmdLine sqlConsole = new SQLCmdLine(conMap, mainPane);// Pane to run
+		final SQLCmdLine sqlConsole = new SQLCmdLine(conMap, mainPane);// Pane to run
 																	// SQL
 																	// Commands
 		mainPane.setLayout(new CardLayout());// Allows multiple panes to be
@@ -177,7 +177,7 @@ public class MainSimulator extends PApplet {
 														// reference string
 		mainPane.add(sqlConsole, sqlCard);// Adds the sql panel and adds a
 											// reference string
-		CardLayout cl = (CardLayout) (mainPane.getLayout());// Creates a
+		final CardLayout cl = (CardLayout) (mainPane.getLayout());// Creates a
 															// reference
 															// cardlayout for
 															// performing
@@ -319,6 +319,43 @@ public class MainSimulator extends PApplet {
 		background(128, 0, 128);
 		cp5 = new ControlP5(this);
 		fill(255);
+
+	}
+
+	public void draw() {
+		weeklyRun();
+		ghettoButtonHider();
+	}
+
+	private void regularWeekInfo() {
+		background(128, 0, 128);
+		text("Credit Hours: ", textRow1x, 115);
+		text("Work Hours: ", textRow1x, 165);
+		text("Class Time: ", textRow1x, 215);
+		text("Study Time: ", textRow1x, 265);
+		text("Academic Visits: ", textRow2x, 115);
+		text("Party Time: ", textRow2x, 165);
+		text("1", 350, fieldRow1x - 20);
+		text("2", 920, 495);
+		text("3", 920, 695);
+
+		text(errorText, 500, 500);
+
+
+		text("Happiness: " + happyWeekly, 500, 300);
+		text("Weekly Wealth: " + wealthWeekly, 500, 350);
+		text("Weekly Grades: " + gradeWeekly, 500, 400);
+		text("All your money: " + wealthTotal, 500, 500);
+		text("Week: " + week, 500, 450);
+
+
+		text("Ranges:", 200, 450);
+		text("Work: " + "0 - 40", 200, 515);
+		text("Class Time: " + "0 - " + creditHours, 200, 530);
+		text("Study Time: " + "0 - 50", 200, 545);
+		text("Academic Time: " + "0 - 30", 200, 560);
+		text("Leisure Time: " + "0 - 60", 200, 575);
+
 		creditHoursField = cp5.addTextfield("creditHours").setPosition(fieldRow1x, 100).setSize(200, 20)
 				.setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
 				.setFont(font);
@@ -337,30 +374,6 @@ public class MainSimulator extends PApplet {
 		partyTimeField = cp5.addTextfield("partyTime").setPosition(fieldRow2x, 150).setSize(200, 20)
 				.setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
 				.setFont(font);
-
-		cp5.addButton("nextWeek").setSize(50, 20).setPosition(900, 700).setLabel("Next Week");
-		cp5.addButton("weekStart").setSize(50, 20).setPosition(900, 500).setLabel("Start Week");
-		cp5.addButton("creditSelect").setSize(50, 20).setPosition(330, fieldRow1x - 15).setLabel("Credits");
-
-	}
-
-	public void draw() {
-		background(128, 0, 128);
-		text("Credit Hours: ", textRow1x, 115);
-		text("Work Hours: ", textRow1x, 165);
-		text("Class Time: ", textRow1x, 215);
-		text("Study Time: ", textRow1x, 265);
-		text("Academic Visits: ", textRow2x, 115);
-		text("Party Time: ", textRow2x, 165);
-		text("1", 350, fieldRow1x - 20);
-		text("2", 920, 495);
-		text("3", 920, 695);
-		weeklyStats();
-		text(errorText, 500, 500);
-		drawFaceImage();
-	}
-
-	private void drawFaceImage() {
 	}
 
 	public void firstWeekStats() {
@@ -372,30 +385,28 @@ public class MainSimulator extends PApplet {
 		gradeWeekly = BASE_GRADE_POTENTIAL;
 		soundHappyLvl = happyWeekly;
 	}
+	public void ghettoButtonHider(){
+		if (!(creditHours < 0)){
+			cp5.addButton("creditSelect").setSize(50, 20).setPosition(330, fieldRow1x - 15).setLabel("Credits");
+		}
+		if (!isSchoolOver()){
+			cp5.addButton("nextWeek").setSize(50, 20).setPosition(900, 700).setLabel("Next Week");
+			cp5.addButton("weekStart").setSize(50, 20).setPosition(900, 500).setLabel("Start Week");
+		}
+	}
 
-	public synchronized void weeklyStats() {
+	public synchronized void weeklyRun() {
 		if (!isSchoolOver()) {
-			text("Happiness: " + happyWeekly, 500, 300);
-			text("Weekly Wealth: " + wealthWeekly, 500, 350);
-			text("Weekly Grades: " + gradeWeekly, 500, 400);
-			text("All your money: " + wealthTotal, 500, 500);
-			text("Week: " + week, 500, 450);
-			// Below is not working properly
-			// text("Ranges:", 200, 450);
-			// text("Work: " + "0 - 40", 200, 515);
-			// text("Class Time: " + "0 - " + creditHours, 200, 530);
-			// text("Study Time: " + "0 - " + 2 * creditHours, 200, 545);
-			// text("Academic Time: " + "0 - " + .5 * study, 200, 560);
-			// text("Leisure Time: " + "0 - " + math, 200, 575);
+			regularWeekInfo();
 		} else {
 			text("Final Happiness: " + happySum, 500, 300);
 			text("Final Grades: " + gradeSum, 500, 400);
 			text("Final Wealth: " + wealthTotal, 500, 350);
-			workHoursField.lock();
-			academicVisitField.lock();
-			studyTimeField.lock();
-			partyTimeField.lock();
-			classTimeField.lock();
+			workHoursField.clear();
+			academicVisitField.clear();
+			studyTimeField.clear();
+			partyTimeField.clear();
+			classTimeField.clear();
 			JFrame top = new JFrame();
 			top.setAlwaysOnTop(true);
 			top.setVisible(false);
@@ -405,15 +416,19 @@ public class MainSimulator extends PApplet {
 
 	public synchronized boolean isSchoolOver() {
 		if (week > 2) {
-			happySum = happyAverage;
-			happyAverage /= week;
-			gradeSum = gradeAverage;
-			gradeAverage /= week;
-			scoreTally();
+			endWeekMath();
 			clip.stop();
 			return true;
 		} else
 			return false;
+	}
+	public void endWeekMath(){
+		happySum = happyAverage;
+		happyAverage /= week;
+		gradeSum = gradeAverage;
+		gradeAverage /= week;
+		scoreTally();
+
 	}
 
 	public void exportData() {
@@ -599,11 +614,14 @@ public class MainSimulator extends PApplet {
 		aca = Float.parseFloat(academicVisitField.getText());
 		party = Float.parseFloat(partyTimeField.getText());
 
-		if ((work >= 0 && work <= MAX_WORK) && (classt >= 0 && classt <= MAX_CREDITS)
-				&& (study >= 0 && study <= (2 * creditHours)) && (aca >= 0 && aca <= (.5 * study))
-				&& (party >= 0 && party <= math) && !isSchoolOver()) {
+		if ((work >= 0 && work <= MAX_WORK) &&
+				(classt >= 0 && classt <= creditHours)
+				&& (study >= 0 && study <= 50) &&
+				(aca >= 0 && aca <= 30)
+				&& (party >= 0 && party <= 60) && !isSchoolOver()) {
 			return true;
 		}
+		else JOptionPane.showMessageDialog(null, "Please check your ranges.");
 		return false;
 	}
 
@@ -622,9 +640,7 @@ public class MainSimulator extends PApplet {
 			partyTime = Float.parseFloat(partyTimeField.getText());
 			partyTimeField.lock();
 			mathForWeek();
-			System.out.println("Credit Hours:\t\t" + creditHours + "\n" + "Work Hours:\t\t\t" + workHours + "\n"
-					+ "Class Time:\t\t\t" + classTime + "\n" + "Study Time:\t\t\t" + studyTime + "\n"
-					+ "Academic Visits:\t" + academicVisit + "\n" + "Leisure Time:\t\t\t" + partyTime);
+			randomEventerator();
 		} else
 			System.out.println("you broke it");
 
@@ -649,62 +665,70 @@ public class MainSimulator extends PApplet {
 			creditHours = Float.parseFloat(creditHoursField.getText());
 			creditHoursField.lock();
 		} else
-			System.out.println("Pick a value between 12 and 24");
+			JOptionPane.showMessageDialog(null, "Please pick a value between 12 and 24");
 	}
 
 	public void nextWeek() {
 		if (numberCheck()) {
-			workHoursField.unlock().clear();
-			classTimeField.unlock().clear();
-			studyTimeField.unlock().clear();
-			academicVisitField.unlock().clear();
-			partyTimeField.unlock().clear();
-
-			System.out.println("Total Wealth\t\t\t" + wealthTotal + "\n" + "Total Grades\t\t\t" + gradeSum);
+			workHoursField.unlock();
+			classTimeField.unlock();
+			studyTimeField.unlock();
+			academicVisitField.unlock();
+			partyTimeField.unlock();
+			randomEventerator();
 			weeklyReset();
-		} else if (isSchoolOver()) {
-			text("EVERYTHING IS DONE", 500, 500);
 		} else
-			System.out.println("is brok");
+			JOptionPane.showMessageDialog(null, "Please check your ranges.");
 	}
 
-	public void randomGenerator() {
+	public int randomPositiveGenerator() {
 		Random rand = new Random();
-
-		randNum = rand.nextInt(6) + 1;
+		return randNum = rand.nextInt(100) + ((int)happyWeekly / 100);
+	}
+	public int randomNegativeGenerator(){
+		Random rand = new Random();
+		return randNum = rand.nextInt(100) - ((int)happyWeekly / 100);
 	}
 
-	private void randomEvents() {
-		if (randNum == 1) {
-			System.out.println("You decide a night of partying would be better than homework.");
-			// decrease wealth and grades by small amount, increase happiness by
-			// medium amount
+	public void randomEventerator(){
+		if (randomPositiveGenerator() > 60 && randomPositiveGenerator() < 65){
+			JOptionPane.showMessageDialog(null, "A professor offers an easy extra credit assignment. Your grade and happiness have increased slightly.");
+			happyWeekly += 10;
+			gradeWeekly += 15;
 		}
-		if (randNum == 2) {
-			System.out.println("A professor offers an easy extra credit assignment.");
-			// increase happiness and grade by small amount
+		if (randomPositiveGenerator() > 66 && randomPositiveGenerator() < 71){
+			JOptionPane.showMessageDialog(null, "You binge Game of Thrones and fall asleep to the beautiful sound of Kit Harrington's voice...without working on your Comp101 project.");
+			happyWeekly += 10;
+			gradeWeekly -= 10;
 		}
-		if (randNum == 3) {
-			System.out.println("You binge Game of Thrones and fall asleep to the beautiful\n"
-					+ "sound of Kit Harrington's voice...without working on your Comp project.");
-			// decrease grade by small amount and raise happiness by small
-			// amount
+		if (randomNegativeGenerator() > 20 && randomPositiveGenerator() < 30){
+			JOptionPane.showMessageDialog(null, "You decide a night of partying would be better than homework. Your happiness has increased, but grade has decreased");
+			happyWeekly += 5;
+			gradeWeekly -= 10;
+			wealthWeekly -= 7;
 		}
-		if (randNum == 4) {
-			System.out.println("You stay up very late, getting a lot of studying done.");
-			// decrease happiness by small amount and raise grade by medium
-			// amount
+		if (randomPositiveGenerator() > 80 && randomPositiveGenerator() < 90){
+			JOptionPane.showMessageDialog(null, "You stay up very late, getting a lot of studying done. Your happiness has decreased, but grade has increased significantly");
+			happyWeekly -= 7;
+			gradeWeekly += 20;
 		}
-		if (randNum == 5) {
-			System.out.println("You decide to work overtime for a few hours.");
-			// decrease grade by small amount and raise wealth and happiness by
-			// small amount
+		if (randomNegativeGenerator() > 45 && randomPositiveGenerator() < 35){
+			JOptionPane.showMessageDialog(null, "You decide to work overtime for a few hours. Your happiness has decreased and wealth has increased");
+			happyWeekly -= 7;
+			wealthWeekly += 25;
 		}
-		if (randNum == 6) {
-			System.out.println("You get in an argument with a friend.");
-			// decrease happiness by medium amount
+		if (randomNegativeGenerator() >= 0 && (gradeAverage > 100 && gradeAverage < 300 )){
+			JOptionPane.showMessageDialog(null, "Your laziness has incurred the wrath of the Tonberry...");
+			happyWeekly = 0;
+			gradeWeekly = 0;
+			wealthWeekly = 0;
+		}
+		if (randomNegativeGenerator() > 10 && randomPositiveGenerator() < 0){
+			JOptionPane.showMessageDialog(null, "You get in an argument with a friend. Your happiness has decreased significantly");
+			happyWeekly -=25;
 		}
 	}
+
 
 	public JFrame getFrame() {
 		return gameFrame;
