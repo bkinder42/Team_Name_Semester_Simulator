@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -272,12 +273,17 @@ public class StartMenu {
 						Scanner inFile;
 						try {
 							inFile = new Scanner(saveFile);
-							sim.setWealth(inFile.nextInt());
-							sim.setCreditHours(inFile.nextInt());
-							sim.setGradeSum(inFile.nextInt());
-							sim.setHappySum(inFile.nextInt());
-							sim.setWeek(inFile.nextInt());
+							PrintWriter printer = new PrintWriter(new FileWriter(new File("LoadTemp.txt")));
+							printer.write(inFile.nextFloat() + "\n");
+							printer.write(inFile.nextFloat() + "\n");
+							printer.write(inFile.nextFloat() + "\n");
+							printer.write(inFile.nextFloat() + "\n");
+							printer.write(inFile.nextInt() + "");
+							printer.close();
 						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -289,19 +295,13 @@ public class StartMenu {
 					public void run() {
 						float[] values = new float[5];
 						while (sim.isPlaying()) {
-							values[0] = sim.getWealth();
-							values[1] = sim.getCreditHours();
-							values[2] = sim.getGrades();
-							values[3] = sim.getHappy();
-							values[4] = sim.getWeek();
-//						\	System.out.println("Sim Playing: " + sim.isPlaying());
+							System.out.println("Synchronization");
 						}
 						sim.exit();
 
 						if (sim.getSaving()) {
 							// PrintWriter printer = new PrintWriter(new
 							// FileWriter(new File(JOption)))
-							System.out.println("Current Wealth: " + sim.getWealth());
 							JFileChooser saveFilePick = new JFileChooser();
 							int option = -1;
 							File saveFile = null;
@@ -309,20 +309,32 @@ public class StartMenu {
 								option = saveFilePick.showSaveDialog(null);
 							} while (option != JFileChooser.APPROVE_OPTION);
 							saveFile = saveFilePick.getSelectedFile();
+							String fileName = saveFile.getAbsolutePath();
+							if(fileName.contains(".")){
+								fileName = fileName.split(".")[0];
+							}
+							fileName += ".txt";
+							System.out.println("File Name: " + fileName);
 							try {
-								PrintWriter writer = new PrintWriter(new FileWriter(new File("TestSav.txt")));
+								Scanner inFile = new Scanner(new File("Temp.txt"));
+								PrintWriter writer = new PrintWriter(new FileWriter(new File(fileName)));
 //								new Logger().log("Wealth" + sim.getWealth());
-								writer.write(values[0] + "\n");
-								writer.write(values[1] + "\n");
-								writer.write(values[2] + "\n");
-								writer.write(values[3] + "\n");
-								writer.write("" + values[4]);
+								writer.write(inFile.nextLine() + "\r\n");
+								writer.write(inFile.nextLine() + "\r\n");
+								writer.write(inFile.nextLine() + "\r\n");
+								writer.write(inFile.nextLine() + "\r\n");
+								writer.write("" + inFile.nextLine());
 								writer.close();
+								inFile.close();
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
 						}
-
+						try {
+							Files.deleteIfExists(new File("Temp.txt").toPath());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 						sim.getFrame().dispose();
 						startMenu.setVisible(true);
 						musicThread.getPlayer().stop();
