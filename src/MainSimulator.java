@@ -319,12 +319,35 @@ public class MainSimulator extends PApplet {
 		background(128, 0, 128);
 		cp5 = new ControlP5(this);
 		fill(255);
+
+
         cp5.addButton("nextWeek").setSize(50, 20).setPosition(900, 700).setLabel("Next Week");
         cp5.addButton("weekStart").setSize(50, 20).setPosition(900, 500).setLabel("Start Week");
         cp5.addButton("creditSelect").setSize(50, 20).setPosition(330, fieldRow1x - 15).setLabel("Credits");
 
+		creditHoursField = cp5.addTextfield("creditHours").setPosition(fieldRow1x, 100).setSize(200, 20)
+				.setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
+				.setFont(font);
+		workHoursField = cp5.addTextfield("workHours").setPosition(fieldRow1x, 150).setSize(200, 20)
+				.setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
+				.setFont(font);
+		classTimeField = cp5.addTextfield("classTime").setPosition(fieldRow1x, 200).setSize(200, 20)
+				.setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
+				.setFont(font);
+		studyTimeField = cp5.addTextfield("studyTime").setPosition(fieldRow1x, 250).setSize(200, 20)
+				.setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
+				.setFont(font);
+		academicVisitField = cp5.addTextfield("academicVisit").setPosition(fieldRow2x, 100).setSize(200, 20)
+				.setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
+				.setFont(font);
+		partyTimeField = cp5.addTextfield("partyTime").setPosition(fieldRow2x, 150).setSize(200, 20)
+				.setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
+				.setFont(font);
+
+
 
 	}
+
 	public void allThePrettyThings(){
         text("Credit Hours: ", textRow1x, 115);
         text("Work Hours: ", textRow1x, 165);
@@ -353,25 +376,6 @@ public class MainSimulator extends PApplet {
         text("Study Time: " + "0 - 50", 200, 545);
         text("Academic Time: " + "0 - 30", 200, 560);
         text("Leisure Time: " + "0 - 60", 200, 575);
-
-        creditHoursField = cp5.addTextfield("creditHours").setPosition(fieldRow1x, 100).setSize(200, 20)
-                .setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
-                .setFont(font);
-        workHoursField = cp5.addTextfield("workHours").setPosition(fieldRow1x, 150).setSize(200, 20)
-                .setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
-                .setFont(font);
-        classTimeField = cp5.addTextfield("classTime").setPosition(fieldRow1x, 200).setSize(200, 20)
-                .setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
-                .setFont(font);
-        studyTimeField = cp5.addTextfield("studyTime").setPosition(fieldRow1x, 250).setSize(200, 20)
-                .setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
-                .setFont(font);
-        academicVisitField = cp5.addTextfield("academicVisit").setPosition(fieldRow2x, 100).setSize(200, 20)
-                .setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
-                .setFont(font);
-        partyTimeField = cp5.addTextfield("partyTime").setPosition(fieldRow2x, 150).setSize(200, 20)
-                .setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
-                .setFont(font);
 
     }
 
