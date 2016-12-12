@@ -7,7 +7,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Arc2D;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -33,6 +43,7 @@ import processing.core.PSurface;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * * File: MainSimulator * Author: Ben Kinder, Andrew Knox, Aaron Wood * Date
@@ -112,7 +123,8 @@ public class MainSimulator extends PApplet {
 	public void run(HashMap<String, String> conMap, Account userAcnt, MusicThread soundThread) {
 		this.conMap = conMap;
 		this.userAcc = userAcnt;
-		soundThread.getPlayer().stop();// Pauses the soundtrack from the main menu
+		soundThread.getPlayer().stop();// Pauses the soundtrack from the main
+										// menu
 		playing = true;// Control variable for the multiwindow threading
 		saving = false;
 		// create your JFrame
@@ -208,7 +220,7 @@ public class MainSimulator extends PApplet {
 		});
 		gameFrame.setResizable(false);
 		gameFrame.add(mainPane);
-		
+
 		// start your sketch
 		ps.startThread();
 	}
@@ -250,10 +262,51 @@ public class MainSimulator extends PApplet {
 	public void settings() {
 		size(1024, 768);
 	}
+	
+	public void loadGame(){
+		try {
+			BufferedReader inFile = new BufferedReader(new FileReader("LoadTemp.txt"));
+			String line = inFile.readLine();
+			System.out.println("Test Line: " + line);
+			setWealth(Float.parseFloat(line));
+			System.out.println("Wealth: " + wealthTotal);
+			setCreditHours(Float.parseFloat(inFile.readLine()));
+			System.out.println("Credit hours: " + creditHours);
+			setGradeSum(Float.parseFloat(inFile.readLine()));
+			System.out.println("Grade Sum: " + gradeSum);
+			setHappySum(Float.parseFloat(inFile.readLine()));
+			System.out.println("Happy Sum: " + happySum);
+			setWeek(Integer.parseInt(inFile.readLine()));
+			System.out.println("Week: " + week);
+			inFile.close();
+			Files.deleteIfExists(new File("LoadTemp.txt").toPath());
+			if(happySum >= 75){
+				startMusic(2);
+			}else if(happySum < 75 && happySum >= 45){
+				startMusic(1);
+			}else{
+				startMusic(0);
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		happyWeekly = BASE_HAPPINESS;
+		gradeWeekly = BASE_GRADE_POTENTIAL;
+		soundHappyLvl = happyWeekly;
+	}
 
 	public void setup() {
-		startMusic(1);
-		firstWeekStats();
+		if((new File("LoadTemp.txt")).exists()){
+			loadGame();
+			System.out.println("File Exists" + (new File("LoadTemp.txt")).exists());
+		}else{
+			startMusic(1);
+			firstWeekStats();
+		}
 		settings();
 		errorText = "";
 		fieldRow1x = 115;
@@ -361,7 +414,23 @@ public class MainSimulator extends PApplet {
 			return true;
 		} else
 			return false;
+	}
 
+	public void exportData() {
+		try {
+			if (week >= 1) {
+				PrintWriter writer = new PrintWriter(new FileWriter(new File("Temp.txt")));
+				writer.write(getWealth() + "\n");
+				writer.write(getCreditHours() + "\n");
+				writer.write(getGrades() + "\n");
+				writer.write(getHappy() + "\n");
+				writer.write(getWeek() + "");
+				writer.close();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public synchronized void weeklyReset() {
@@ -372,6 +441,7 @@ public class MainSimulator extends PApplet {
 		happyWeekly = BASE_HAPPINESS;
 		gradeWeekly = BASE_GRADE_POTENTIAL;
 		week += 1;
+		exportData();
 	}
 
 	public synchronized void mathForWeek() {
@@ -425,38 +495,42 @@ public class MainSimulator extends PApplet {
 		}
 		startMusic(modSound());
 	}
-	
-	
-	public int modSound(){
+
+	public int modSound() {
 		soundHappyLvl = happyWeekly / week;
 		if (soundHappyLvl >= 75) {
 			return 2;
-		}else if (soundHappyLvl < 75 && happyWeekly >= 45) {
+		} else if (soundHappyLvl < 75 && happyWeekly >= 45) {
 			return 1;
-		}else if (soundHappyLvl < 45) {
+		} else if (soundHappyLvl < 45) {
 			return 0;
-		}else{
+		} else {
 			return -1;
 		}
 	}
-	
-	public void startMusic(int val){
+
+	public void startMusic(int val) {
 		String song = "";
-		switch(val){
-		case 0: song = "Sad_1.wav"; break;
-		case 1: song = "Neutral_1.wav"; break;
-		case 2: song = "Happy_1.wav"; break;
+		switch (val) {
+		case 0:
+			song = "Sad_1.wav";
+			break;
+		case 1:
+			song = "Neutral_1.wav";
+			break;
+		case 2:
+			song = "Happy_1.wav";
+			break;
 		}
 		try {
-			if(clip != null)
+			if (clip != null)
 				clip.stop();
-	        clip = AudioSystem.getClip();
-	        AudioInputStream inputStream;
-			inputStream = AudioSystem.getAudioInputStream(
-					this.getClass().getResourceAsStream(song));
-	        clip.open(inputStream);
-	        clip.start();
-	        clip.loop(Clip.LOOP_CONTINUOUSLY);
+			clip = AudioSystem.getClip();
+			AudioInputStream inputStream;
+			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResourceAsStream(song));
+			clip.open(inputStream);
+			clip.start();
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
 		} catch (UnsupportedAudioFileException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -490,25 +564,25 @@ public class MainSimulator extends PApplet {
 		return happySum;
 	}
 
-	public synchronized float getWeek() {
+	public synchronized int getWeek() {
 		return week;
 	}
 
 	//////
 	// SETTERS
-	public synchronized void setWealth(int wealthTotal) {
+	public synchronized void setWealth(float wealthTotal) {
 		this.wealthTotal = wealthTotal;
 	}
 
-	public synchronized void setCreditHours(int creditHours) {
+	public synchronized void setCreditHours(float creditHours) {
 		this.creditHours = creditHours;
 	}
 
-	public synchronized void setGradeSum(int gradeSum) {
+	public synchronized void setGradeSum(float gradeSum) {
 		this.gradeSum = gradeSum;
 	}
 
-	public synchronized void setHappySum(int happySum) {
+	public synchronized void setHappySum(float happySum) {
 		this.happySum = happySum;
 	}
 
@@ -653,11 +727,11 @@ public class MainSimulator extends PApplet {
 		}
 		gameFrame.setVisible(false);
 		if (!isSchoolOver()) {
-			int save = JOptionPane.showOptionDialog(null, "Save Game?", "Save", 0, 0, null,
+			int save = JOptionPane.showOptionDialog(null, "Save Game?", "Save", 1, 1, null,
 					new String[] { "Save", "Don't Save" }, 0);
 			if (save == 0) {
 				saving = true;
-				
+
 			} else {
 				saving = false;
 			}
