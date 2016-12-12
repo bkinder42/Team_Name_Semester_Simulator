@@ -350,7 +350,6 @@ public class MainSimulator extends PApplet {
 	}
 
 	private void regularWeekInfo() {
-		background(128, 0, 128);
 		text("Credit Hours: ", textRow1x, 115);
 		text("Work Hours: ", textRow1x, 165);
 		text("Class Time: ", textRow1x, 215);
@@ -714,7 +713,7 @@ public class MainSimulator extends PApplet {
 			happyWeekly -= 7;
 			wealthWeekly += 25;
 		}
-		if (randomNegativeGenerator() >= 0 && (gradeAverage > 100 && gradeAverage < 300 )){
+		if (randomNegativeGenerator() >= 0 && (week > 3 && gradeAverage < 150 )){
 			JOptionPane.showMessageDialog(null, "Your laziness has incurred the wrath of the Tonberry...");
 			happyWeekly = 0;
 			gradeWeekly = 0;
