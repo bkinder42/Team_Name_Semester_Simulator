@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -262,7 +263,8 @@ public class StartMenu {
 			public void actionPerformed(ActionEvent arg0) {
 				// Builds the main simulator
 				MainSimulator sim = new MainSimulator();
-				int loadNew = JOptionPane.showOptionDialog(null, "Load or New Game", "Load Option", 0, 0, null,
+				int loadNew = 0;
+				loadNew = JOptionPane.showOptionDialog(null, "Load or New Game", "Load Option", 1, 1, null,
 						new String[] { "New Game", "Load Game" }, 0);
 				if (loadNew == 1) {
 					JFileChooser filePick = new JFileChooser();
@@ -271,26 +273,32 @@ public class StartMenu {
 						Scanner inFile;
 						try {
 							inFile = new Scanner(saveFile);
-							sim.setWealth(inFile.nextInt());
-							sim.setCreditHours(inFile.nextInt());
-							sim.setGradeSum(inFile.nextInt());
-							sim.setHappySum(inFile.nextInt());
-							sim.setWeek(inFile.nextInt());
+							PrintWriter printer = new PrintWriter(new FileWriter(new File("LoadTemp.txt")));
+							printer.write(inFile.nextFloat() + "\n");
+							printer.write(inFile.nextFloat() + "\n");
+							printer.write(inFile.nextFloat() + "\n");
+							printer.write(inFile.nextFloat() + "\n");
+							printer.write(inFile.nextInt() + "");
+							printer.close();
 						} catch (FileNotFoundException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
 				}
-				sim.run(conConfig, userAccount, songs, musicThread);
+				sim.run(conConfig, userAccount, musicThread);
 				startMenu.setVisible(false);
 				// Thread to control window switching
 				Thread playing = new Thread(new Runnable() {
 					public void run() {
+						float[] values = new float[5];
 						while (sim.isPlaying()) {
-							System.out.println("Sim Playing: " + sim.isPlaying());
+							System.out.println("Synchronization");
 						}
 						sim.exit();
-						
+
 						if (sim.getSaving()) {
 							// PrintWriter printer = new PrintWriter(new
 							// FileWriter(new File(JOption)))
@@ -301,20 +309,32 @@ public class StartMenu {
 								option = saveFilePick.showSaveDialog(null);
 							} while (option != JFileChooser.APPROVE_OPTION);
 							saveFile = saveFilePick.getSelectedFile();
+							String fileName = saveFile.getAbsolutePath();
+							if(fileName.contains(".")){
+								fileName = fileName.split(".")[0];
+							}
+							fileName += ".txt";
+							System.out.println("File Name: " + fileName);
 							try {
-								PrintWriter writer = new PrintWriter(new FileWriter(saveFile));
-								System.out.println("Wealth" + sim.getWealth());
-								writer.write(sim.getWealth() + "\n");
-								writer.write(sim.getCreditHours() + "\n");
-								writer.write(sim.getGrades() + "\n");
-								writer.write(sim.getHappy() + "\n");
-								writer.write("" + sim.getWeek());
+								Scanner inFile = new Scanner(new File("Temp.txt"));
+								PrintWriter writer = new PrintWriter(new FileWriter(new File(fileName)));
+//								new Logger().log("Wealth" + sim.getWealth());
+								writer.write(inFile.nextLine() + "\r\n");
+								writer.write(inFile.nextLine() + "\r\n");
+								writer.write(inFile.nextLine() + "\r\n");
+								writer.write(inFile.nextLine() + "\r\n");
+								writer.write("" + inFile.nextLine());
 								writer.close();
+								inFile.close();
 							} catch (IOException e) {
 								e.printStackTrace();
 							}
 						}
-
+						try {
+							Files.deleteIfExists(new File("Temp.txt").toPath());
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 						sim.getFrame().dispose();
 						startMenu.setVisible(true);
 						musicThread.getPlayer().stop();
@@ -375,7 +395,7 @@ public class StartMenu {
 		btnSettings.setBackground(new Color(btnSettings.getBackground().getRed(), btnSettings.getBackground().getBlue(),
 				btnSettings.getBackground().getGreen(), opacity));
 		btnSettings.setBounds(309, 228, 141, 35);
-//		contentPane.add(btnSettings);
+		// contentPane.add(btnSettings);
 
 		// Exit button and properties
 		TransparentJButton btnExit = new TransparentJButton("Exit");

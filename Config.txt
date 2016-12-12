@@ -1,0 +1,14 @@
+//Server Info(String): Ip then user/pass/databaseName/Num of Tables Loading/Tables
+jdbc:mysql://brk42.org:3306/
+root
+Ignitus1
+final_project
+2
+user_accounts
+scoreboard
+//Sound(Int): Level/Language(English[0], Spanish[1])
+100
+0
+//J4v4 Server Port Num
+1235
+127.0.0.1
