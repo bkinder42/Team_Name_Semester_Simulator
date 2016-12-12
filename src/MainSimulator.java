@@ -695,12 +695,29 @@ public class MainSimulator extends PApplet {
 	}
 
 	public void randomEventerator(){
-	    if (randomNegativeGenerator() <= 100 && (week > 1 && gradeSum < 10000 )){
+	    if ((randomNegativeGenerator() - week) > 0 && (week > 1 && (gradeSum < 150 + (week^2)))){
             JOptionPane.showMessageDialog(null, "Your laziness has incurred the wrath of the Tonberry...");
             happyWeekly = 0;
             gradeWeekly = 0;
             wealthWeekly = 0;
+            wealthTotal = 0;
+
         }
+		else if (randomNegativeGenerator() > 20 && randomPositiveGenerator() < 30){
+			JOptionPane.showMessageDialog(null, "You decide a night of partying would be better than homework. Your happiness has increased, but grade has decreased");
+			happyWeekly += 5;
+			gradeWeekly -= 10;
+			wealthWeekly -= 7;
+		}
+		else if (randomNegativeGenerator() > 45 && randomPositiveGenerator() < 35){
+			JOptionPane.showMessageDialog(null, "You decide to work overtime for a few hours. Your happiness has decreased and wealth has increased");
+			happyWeekly -= 7;
+			wealthWeekly += 25;
+		}
+		else if (randomNegativeGenerator() > 10 && randomPositiveGenerator() < 0){
+			JOptionPane.showMessageDialog(null, "You get in an argument with a friend. Your happiness has decreased significantly");
+			happyWeekly -=25;
+		}
 		else if (randomPositiveGenerator() > 60 && randomPositiveGenerator() < 65){
 			JOptionPane.showMessageDialog(null, "A professor offers an easy extra credit assignment. Your grade and happiness have increased slightly.");
 			happyWeekly += 10;
@@ -711,25 +728,10 @@ public class MainSimulator extends PApplet {
 			happyWeekly += 10;
 			gradeWeekly -= 10;
 		}
-        else if (randomNegativeGenerator() > 20 && randomPositiveGenerator() < 30){
-			JOptionPane.showMessageDialog(null, "You decide a night of partying would be better than homework. Your happiness has increased, but grade has decreased");
-			happyWeekly += 5;
-			gradeWeekly -= 10;
-			wealthWeekly -= 7;
-		}
 		else if (randomPositiveGenerator() > 80 && randomPositiveGenerator() < 90){
 			JOptionPane.showMessageDialog(null, "You stay up very late, getting a lot of studying done. Your happiness has decreased, but grade has increased significantly");
 			happyWeekly -= 7;
 			gradeWeekly += 20;
-		}
-		else if (randomNegativeGenerator() > 45 && randomPositiveGenerator() < 35){
-			JOptionPane.showMessageDialog(null, "You decide to work overtime for a few hours. Your happiness has decreased and wealth has increased");
-			happyWeekly -= 7;
-			wealthWeekly += 25;
-		}
-		else if (randomNegativeGenerator() > 10 && randomPositiveGenerator() < 0){
-			JOptionPane.showMessageDialog(null, "You get in an argument with a friend. Your happiness has decreased significantly");
-			happyWeekly -=25;
 		}
 	}
 
