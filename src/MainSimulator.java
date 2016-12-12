@@ -688,7 +688,7 @@ public class MainSimulator extends PApplet {
 	}
 
 	public void randomEventerator(){
-	    if (randomNegativeGenerator() <= 100 && (week > 1 && gradeAverage < 10000 )){
+	    if (randomNegativeGenerator() <= 100 && (week > 1 && gradeSum < 10000 )){
             JOptionPane.showMessageDialog(null, "Your laziness has incurred the wrath of the Tonberry...");
             happyWeekly = 0;
             gradeWeekly = 0;
