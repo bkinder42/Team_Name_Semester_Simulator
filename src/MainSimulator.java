@@ -638,7 +638,7 @@ public class MainSimulator extends PApplet {
 			mathForWeek();
 			randomEventerator();
 		} else
-			System.out.println("you broke it");
+            JOptionPane.showMessageDialog(null, "Please check your ranges.");
 
 	}
 
@@ -671,7 +671,6 @@ public class MainSimulator extends PApplet {
 			studyTimeField.unlock();
 			academicVisitField.unlock();
 			partyTimeField.unlock();
-			randomEventerator();
 			weeklyReset();
 		} else
 			JOptionPane.showMessageDialog(null, "Please check your ranges.");
@@ -687,39 +686,39 @@ public class MainSimulator extends PApplet {
 	}
 
 	public void randomEventerator(){
-		if (randomPositiveGenerator() > 60 && randomPositiveGenerator() < 65){
+	    if (randomNegativeGenerator() >= 100 && (week > 3 && gradeAverage < 150 )){
+            JOptionPane.showMessageDialog(null, "Your laziness has incurred the wrath of the Tonberry...");
+            happyWeekly = 0;
+            gradeWeekly = 0;
+            wealthWeekly = 0;
+        }
+		else if (randomPositiveGenerator() > 60 && randomPositiveGenerator() < 65){
 			JOptionPane.showMessageDialog(null, "A professor offers an easy extra credit assignment. Your grade and happiness have increased slightly.");
 			happyWeekly += 10;
 			gradeWeekly += 15;
 		}
-		if (randomPositiveGenerator() > 66 && randomPositiveGenerator() < 71){
+		else if (randomPositiveGenerator() > 66 && randomPositiveGenerator() < 71){
 			JOptionPane.showMessageDialog(null, "You binge Game of Thrones and fall asleep to the beautiful sound of Kit Harrington's voice...without working on your Comp101 project.");
 			happyWeekly += 10;
 			gradeWeekly -= 10;
 		}
-		if (randomNegativeGenerator() > 20 && randomPositiveGenerator() < 30){
+        else if (randomNegativeGenerator() > 20 && randomPositiveGenerator() < 30){
 			JOptionPane.showMessageDialog(null, "You decide a night of partying would be better than homework. Your happiness has increased, but grade has decreased");
 			happyWeekly += 5;
 			gradeWeekly -= 10;
 			wealthWeekly -= 7;
 		}
-		if (randomPositiveGenerator() > 80 && randomPositiveGenerator() < 90){
+		else if (randomPositiveGenerator() > 80 && randomPositiveGenerator() < 90){
 			JOptionPane.showMessageDialog(null, "You stay up very late, getting a lot of studying done. Your happiness has decreased, but grade has increased significantly");
 			happyWeekly -= 7;
 			gradeWeekly += 20;
 		}
-		if (randomNegativeGenerator() > 45 && randomPositiveGenerator() < 35){
+		else if (randomNegativeGenerator() > 45 && randomPositiveGenerator() < 35){
 			JOptionPane.showMessageDialog(null, "You decide to work overtime for a few hours. Your happiness has decreased and wealth has increased");
 			happyWeekly -= 7;
 			wealthWeekly += 25;
 		}
-		if (randomNegativeGenerator() >= 0 && (week > 3 && gradeAverage < 150 )){
-			JOptionPane.showMessageDialog(null, "Your laziness has incurred the wrath of the Tonberry...");
-			happyWeekly = 0;
-			gradeWeekly = 0;
-			wealthWeekly = 0;
-		}
-		if (randomNegativeGenerator() > 10 && randomPositiveGenerator() < 0){
+		else if (randomNegativeGenerator() > 10 && randomPositiveGenerator() < 0){
 			JOptionPane.showMessageDialog(null, "You get in an argument with a friend. Your happiness has decreased significantly");
 			happyWeekly -=25;
 		}
