@@ -282,19 +282,26 @@ public class StartMenu {
 						}
 					}
 				}
-				sim.run(conConfig, userAccount, songs, musicThread);
+				sim.run(conConfig, userAccount, musicThread);
 				startMenu.setVisible(false);
 				// Thread to control window switching
 				Thread playing = new Thread(new Runnable() {
 					public void run() {
+						float[] values = new float[5];
 						while (sim.isPlaying()) {
-							System.out.println("Sim Playing: " + sim.isPlaying());
+							values[0] = sim.getWealth();
+							values[1] = sim.getCreditHours();
+							values[2] = sim.getGrades();
+							values[3] = sim.getHappy();
+							values[4] = sim.getWeek();
+//						\	System.out.println("Sim Playing: " + sim.isPlaying());
 						}
 						sim.exit();
-						
+
 						if (sim.getSaving()) {
 							// PrintWriter printer = new PrintWriter(new
 							// FileWriter(new File(JOption)))
+							System.out.println("Current Wealth: " + sim.getWealth());
 							JFileChooser saveFilePick = new JFileChooser();
 							int option = -1;
 							File saveFile = null;
@@ -303,13 +310,13 @@ public class StartMenu {
 							} while (option != JFileChooser.APPROVE_OPTION);
 							saveFile = saveFilePick.getSelectedFile();
 							try {
-								PrintWriter writer = new PrintWriter(new FileWriter(saveFile));
-								System.out.println("Wealth" + sim.getWealth());
-								writer.write(sim.getWealth() + "\n");
-								writer.write(sim.getCreditHours() + "\n");
-								writer.write(sim.getGrades() + "\n");
-								writer.write(sim.getHappy() + "\n");
-								writer.write("" + sim.getWeek());
+								PrintWriter writer = new PrintWriter(new FileWriter(new File("TestSav.txt")));
+//								new Logger().log("Wealth" + sim.getWealth());
+								writer.write(values[0] + "\n");
+								writer.write(values[1] + "\n");
+								writer.write(values[2] + "\n");
+								writer.write(values[3] + "\n");
+								writer.write("" + values[4]);
 								writer.close();
 							} catch (IOException e) {
 								e.printStackTrace();
@@ -376,7 +383,7 @@ public class StartMenu {
 		btnSettings.setBackground(new Color(btnSettings.getBackground().getRed(), btnSettings.getBackground().getBlue(),
 				btnSettings.getBackground().getGreen(), opacity));
 		btnSettings.setBounds(309, 228, 141, 35);
-//		contentPane.add(btnSettings);
+		// contentPane.add(btnSettings);
 
 		// Exit button and properties
 		TransparentJButton btnExit = new TransparentJButton("Exit");

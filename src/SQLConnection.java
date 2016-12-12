@@ -189,8 +189,15 @@ public class SQLConnection {
 	
 	public void setHighscore(int score, int id){
 		try{
-		String update = "update " + conMap.get("Database") + "." + tables.get(1) + " set highscore = " + score +
+			String query = "select highscore from " + conMap.get("Database") + "." + tables.get(0) + "where id = " + id;
+			String update = "update " + conMap.get("Database") + "." + tables.get(0) + " set highscore = " + score +
 				"where id = " + id;
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				if(rs.getInt("highscore") < score)
+					stmt.executeUpdate(update);
+			}
 		}catch(Exception e){
 			System.out.println(":(");
 		}
