@@ -320,6 +320,33 @@ public class MainSimulator extends PApplet {
 		cp5 = new ControlP5(this);
 		fill(255);
 
+        text("Credit Hours: ", textRow1x, 115);
+        text("Work Hours: ", textRow1x, 165);
+        text("Class Time: ", textRow1x, 215);
+        text("Study Time: ", textRow1x, 265);
+        text("Academic Visits: ", textRow2x, 115);
+        text("Party Time: ", textRow2x, 165);
+        text("1", 350, fieldRow1x - 20);
+        text("2", 920, 495);
+        text("3", 920, 695);
+
+        text(errorText, 500, 500);
+
+
+        text("Happiness: " + happyWeekly, 500, 300);
+        text("Weekly Wealth: " + wealthWeekly, 500, 350);
+        text("Weekly Grades: " + gradeWeekly, 500, 400);
+        text("All your money: " + wealthTotal, 500, 500);
+        text("Week: " + week, 500, 450);
+
+
+        text("Ranges:", 200, 450);
+        text("Work: " + "0 - 40", 200, 515);
+        text("Class Time: " + "0 - " + creditHours, 200, 530);
+        text("Study Time: " + "0 - 50", 200, 545);
+        text("Academic Time: " + "0 - 30", 200, 560);
+        text("Leisure Time: " + "0 - 60", 200, 575);
+
         creditHoursField = cp5.addTextfield("creditHours").setPosition(fieldRow1x, 100).setSize(200, 20)
                 .setColorBackground(color(255, 255, 255)).setLabelVisible(false).setLabel("").setColor(color(0))
                 .setFont(font);
@@ -349,36 +376,6 @@ public class MainSimulator extends PApplet {
 		weeklyRun();
 	}
 
-	private void regularWeekInfo() {
-		text("Credit Hours: ", textRow1x, 115);
-		text("Work Hours: ", textRow1x, 165);
-		text("Class Time: ", textRow1x, 215);
-		text("Study Time: ", textRow1x, 265);
-		text("Academic Visits: ", textRow2x, 115);
-		text("Party Time: ", textRow2x, 165);
-		text("1", 350, fieldRow1x - 20);
-		text("2", 920, 495);
-		text("3", 920, 695);
-
-		text(errorText, 500, 500);
-
-
-		text("Happiness: " + happyWeekly, 500, 300);
-		text("Weekly Wealth: " + wealthWeekly, 500, 350);
-		text("Weekly Grades: " + gradeWeekly, 500, 400);
-		text("All your money: " + wealthTotal, 500, 500);
-		text("Week: " + week, 500, 450);
-
-
-		text("Ranges:", 200, 450);
-		text("Work: " + "0 - 40", 200, 515);
-		text("Class Time: " + "0 - " + creditHours, 200, 530);
-		text("Study Time: " + "0 - 50", 200, 545);
-		text("Academic Time: " + "0 - 30", 200, 560);
-		text("Leisure Time: " + "0 - 60", 200, 575);
-
-
-	}
 
 	public void firstWeekStats() {
 		wealthWeekly = 0;
@@ -389,17 +386,19 @@ public class MainSimulator extends PApplet {
 		gradeWeekly = BASE_GRADE_POTENTIAL;
 		soundHappyLvl = happyWeekly;
 	}
+	public void theEnd(){
+        endWeekStats();
+	    endWeekMath();
+        clip.stop();
+    }
 
 
 	public synchronized void weeklyRun() {
-		if (isSchoolOver()) {endWeekStats();}
-		else if (!(isSchoolOver())) regularWeekInfo();
+		if (isSchoolOver()){theEnd();}
 	}
 
 	public synchronized boolean isSchoolOver() {
 		if (week > 2) {
-			endWeekMath();
-			clip.stop();
 			return true;
 		} else
 			return false;
@@ -413,6 +412,9 @@ public class MainSimulator extends PApplet {
 
 	}
 	public void endWeekStats(){
+        JFrame end = new JFrame();
+        end.setAlwaysOnTop(true);
+        end.setVisible(true);
         text("Final Happiness: " + happySum, 500, 300);
         text("Final Grades: " + gradeSum, 500, 400);
         text("Final Wealth: " + wealthTotal, 500, 350);
@@ -686,7 +688,7 @@ public class MainSimulator extends PApplet {
 	}
 
 	public void randomEventerator(){
-	    if (randomNegativeGenerator() <= 100 && (week > 3 && gradeAverage < 150 )){
+	    if (randomNegativeGenerator() <= 100 && (week > 1 && gradeAverage < 10000 )){
             JOptionPane.showMessageDialog(null, "Your laziness has incurred the wrath of the Tonberry...");
             happyWeekly = 0;
             gradeWeekly = 0;
