@@ -777,7 +777,8 @@ public class MainSimulator extends PApplet {
 		} else {
 			saving = false;
 			try {
-				Files.delete(new File("TempEnd.txt").toPath());
+				System.out.println("Time to delete");
+				Files.deleteIfExists(new File("TempEnd.txt").toPath());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
