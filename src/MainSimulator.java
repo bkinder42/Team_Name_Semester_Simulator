@@ -398,7 +398,7 @@ public class MainSimulator extends PApplet {
 	}
 
 	public synchronized boolean isSchoolOver() {
-		if (week > 2) {
+		if (week > 5) {
 			return true;
 		} else
 			return false;

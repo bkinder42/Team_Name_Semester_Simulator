@@ -54,8 +54,8 @@ public class SQLCmdLine extends JPanel {
 		Thread mouseLoc = new Thread(new Runnable() {
 			public void run() {
 				while (true) {
-//					System.out.println("Mouse Loc:(" + MouseInfo.getPointerInfo().getLocation().x + ","
-//							+ MouseInfo.getPointerInfo().getLocation().y + ")");
+					System.out.println("Mouse Loc:(" + MouseInfo.getPointerInfo().getLocation().x + ","
+							+ MouseInfo.getPointerInfo().getLocation().y + ")");
 					if (infoFrame.isVisible()) {
 						infoFrame.setBounds(MouseInfo.getPointerInfo().getLocation().x + 10,
 								MouseInfo.getPointerInfo().getLocation().y + 10, infoFrame.getWidth(),
