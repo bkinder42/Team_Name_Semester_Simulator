@@ -104,7 +104,7 @@ public class MusicPlayer{
 		System.out.println(songs == null);
 		if(songs.size() == 0)
 			throw new NoSongsException();
-		Media media = new Media(this.getClass().getResource(songs.get(curSong)).toString());
+		Media media = new Media(new File(songs.get(curSong)).toString());
 		player = new MediaPlayer(media);
 		player.play();
 		playing = true;
