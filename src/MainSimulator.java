@@ -566,7 +566,7 @@ public class MainSimulator extends PApplet {
 				clip.stop();
 			clip = AudioSystem.getClip();
 			AudioInputStream inputStream;
-			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResourceAsStream(song));
+			inputStream = AudioSystem.getAudioInputStream(new File(song));
 			clip.open(inputStream);
 			clip.start();
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
