@@ -511,8 +511,8 @@ public class MainSimulator extends PApplet {
 		float negative;
 		// credits
 		if (creditHours >= 12) {
-			happyWeekly -= 1.25f * creditHours;
-			gradeWeekly -= 1.5f * creditHours;
+			happyWeekly -= .5f * creditHours;
+			gradeWeekly -= .75f * creditHours;
 		}
 		// work
 		wealthWeekly += (5 * workHours);
