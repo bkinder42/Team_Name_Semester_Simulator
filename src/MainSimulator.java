@@ -46,7 +46,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 /**
- * * File: MainSimulator * Author: Ben Kinder, Andrew Knox, Aaron Wood * Date
+ * * File: MainSimulator * Author: Ben Kinder, Andrew Knox, Aaron Wood, Adam Kostkowski * Date
  * Created: 11/1/16 * Class: COMP 101 * Email: bkinder1@umbc.edu * Email:
  * andrewk6@umbc.edu * Description
  */
