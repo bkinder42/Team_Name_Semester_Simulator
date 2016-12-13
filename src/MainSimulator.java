@@ -537,10 +537,10 @@ public class MainSimulator extends PApplet {
 		if (partyTime <= 0) {
 			gradeWeekly -= 50;
 		}
-		gradeWeekly -= 1.5 * partyTime;
-		wealthWeekly -= 3 * partyTime;
-		if ((wealthWeekly - 3 * partyTime) <= 0) {
-			negative = (wealthWeekly -= 4.5 * partyTime);
+		gradeWeekly -= .25 * partyTime;
+		wealthWeekly -= 2 * partyTime;
+		if ((wealthWeekly - 2 * partyTime) <= 0) {
+			negative = (wealthWeekly -= 2 * partyTime);
 			wealthTotal += negative;
 			if (wealthTotal <= 0) {
 				wealthTotal = 0;
@@ -727,6 +727,20 @@ public class MainSimulator extends PApplet {
 		} else
 			JOptionPane.showMessageDialog(null, "Please check your ranges.");
 	}
+	public void limitChecker(){
+		if(happyWeekly < 0){
+			happyWeekly = 0;
+		}
+		if(gradeWeekly < 0){
+			gradeWeekly = 0;
+		}
+		if(wealthWeekly < 0){
+			wealthWeekly = 0;
+		}
+		if(wealthTotal < 0){
+			wealthTotal = 0;
+		}
+	}
 
 	public int randomPositiveGenerator() {
 		Random rand = new Random();
@@ -738,7 +752,7 @@ public class MainSimulator extends PApplet {
 	}
 
 	public void randomEventerator(){
-	    if ((randomNegativeGenerator() - week) > 0 && (week > 1 && (gradeSum < 150 + (week^2)))){
+	    if ((randomNegativeGenerator() - week) > 0 && (week > 3 && (gradeSum < 150 + (week^2)))){
             JOptionPane.showMessageDialog(null, "Your laziness has incurred the wrath of the Tonberry...");
             happyWeekly = 0;
             gradeWeekly = 0;
@@ -751,6 +765,7 @@ public class MainSimulator extends PApplet {
 			happyWeekly += 5;
 			gradeWeekly -= 10;
 			wealthWeekly -= 7;
+
 		}
 		else if (randomNegativeGenerator() > 45 && randomPositiveGenerator() < 35){
 			JOptionPane.showMessageDialog(null, "You decide to work overtime for a few hours. Your happiness has decreased and wealth has increased");
@@ -776,6 +791,7 @@ public class MainSimulator extends PApplet {
 			happyWeekly -= 7;
 			gradeWeekly += 20;
 		}
+		limitChecker();
 	}
 
 
