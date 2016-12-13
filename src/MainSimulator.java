@@ -534,21 +534,20 @@ public class MainSimulator extends PApplet {
 		gradeWeekly += .25 * academicVisit;
 		happyWeekly -= .25 * academicVisit;
 		// Leisure time
+        happyWeekly += 2 * partyTime;
 		if (partyTime <= 0) {
 			gradeWeekly -= 50;
 		}
 		gradeWeekly -= .25 * partyTime;
-		wealthWeekly -= 2 * partyTime;
-		if ((wealthWeekly - 2 * partyTime) <= 0) {
-			negative = (wealthWeekly -= 2 * partyTime);
+		wealthWeekly -= 1.5 * partyTime;
+		if ((wealthWeekly - 1.5 * partyTime) <= 0) {
+			negative = (wealthWeekly -= 1.5 * partyTime);
 			wealthTotal += negative;
 			if (wealthTotal <= 0) {
 				wealthTotal = 0;
 			}
 			wealthWeekly = 0;
-			// happyWeekly = .25f*partyTime; probably not used
-		} else
-			happyWeekly += 1.5 * partyTime;
+		}
 		// happy check
 		if (happyWeekly <= 0) {
 			happyWeekly = 0;
