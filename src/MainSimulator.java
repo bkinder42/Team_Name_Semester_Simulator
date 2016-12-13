@@ -743,11 +743,11 @@ public class MainSimulator extends PApplet {
 
 	public int randomPositiveGenerator() {
 		Random rand = new Random();
-		return randNum = rand.nextInt(100) + ((int)happyWeekly / 100);
+		return randNum = rand.nextInt(100) + (100 / (int)happyWeekly );
 	}
 	public int randomNegativeGenerator(){
 		Random rand = new Random();
-		return randNum = rand.nextInt(100) - ((int)happyWeekly / 100);
+		return randNum = rand.nextInt(100) - (100 / (int)happyWeekly );
 	}
 
 	public void randomEventerator(){
