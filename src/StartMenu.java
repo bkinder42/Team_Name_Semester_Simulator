@@ -333,7 +333,7 @@ public class StartMenu {
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
-						}
+						} 						
 						if (sim.getSaving()) {
 							// PrintWriter printer = new PrintWriter(new
 							// FileWriter(new File(JOption)))
