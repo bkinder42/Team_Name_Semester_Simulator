@@ -17,6 +17,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -41,6 +46,7 @@ public class StartMenu {
 	private JLabel lblUsername;
 	private int jServerPort;
 	private String jServerIP;
+	private Clip menuMusic;
 
 	/**
 	 * Launch the application.
@@ -226,8 +232,26 @@ public class StartMenu {
 		System.out.println(songs.keySet());
 		System.out.println(songs.get("Menu"));
 		// Creates the thread to handle music
-		MusicThread musicThread = new MusicThread(songs.get("Menu"), soundConfig);
-		musicThread.start();
+		// MusicThread musicThread = new MusicThread(songs.get("Menu"),
+		// soundConfig);
+		// musicThread.start();
+		try {
+			menuMusic = AudioSystem.getClip();
+			AudioInputStream inputStream;
+			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("Menu_1.wav"));
+			menuMusic.open(inputStream);
+			menuMusic.start();
+			menuMusic.loop(Clip.LOOP_CONTINUOUSLY);
+		} catch (LineUnavailableException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		startMenu = new JFrame();
 		// Custom closing operation to save the config before exit
@@ -288,17 +312,28 @@ public class StartMenu {
 						}
 					}
 				}
-				sim.run(conConfig, userAccount, musicThread);
+				sim.run(conConfig, userAccount, menuMusic);
 				startMenu.setVisible(false);
 				// Thread to control window switching
 				Thread playing = new Thread(new Runnable() {
 					public void run() {
 						float[] values = new float[5];
-						while (sim.isPlaying()) {
-							System.out.println("Synchronization");
+						synchronized (sim){ 
+							while (sim.isPlaying()) {
+								 System.out.println("Synchronization");
+							}
 						}
 						sim.exit();
-
+						File stopSound = new File("Stop.txt");
+						PrintWriter exitWriter;
+						try {
+							exitWriter = new PrintWriter(new FileWriter(stopSound));
+							exitWriter.write("true");
+							exitWriter.close();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						if (sim.getSaving()) {
 							// PrintWriter printer = new PrintWriter(new
 							// FileWriter(new File(JOption)))
@@ -310,7 +345,7 @@ public class StartMenu {
 							} while (option != JFileChooser.APPROVE_OPTION);
 							saveFile = saveFilePick.getSelectedFile();
 							String fileName = saveFile.getAbsolutePath();
-							if(fileName.contains(".")){
+							if (fileName.contains(".")) {
 								fileName = fileName.split(".")[0];
 							}
 							fileName += ".txt";
@@ -318,7 +353,7 @@ public class StartMenu {
 							try {
 								Scanner inFile = new Scanner(new File("Temp.txt"));
 								PrintWriter writer = new PrintWriter(new FileWriter(new File(fileName)));
-//								new Logger().log("Wealth" + sim.getWealth());
+								// new Logger().log("Wealth" + sim.getWealth());
 								writer.write(inFile.nextLine() + "\r\n");
 								writer.write(inFile.nextLine() + "\r\n");
 								writer.write(inFile.nextLine() + "\r\n");
@@ -337,9 +372,8 @@ public class StartMenu {
 						}
 						sim.getFrame().dispose();
 						startMenu.setVisible(true);
-						musicThread.getPlayer().stop();
-						musicThread.getPlayer().setSongs(songs.get("Menu"));
-						musicThread.getPlayer().play();
+						menuMusic.start();
+						menuMusic.loop(Clip.LOOP_CONTINUOUSLY);
 
 					}
 				});
@@ -360,41 +394,44 @@ public class StartMenu {
 		contentPane.add(btnAccount);
 
 		// Creates the settings button and assigns properties
-		TransparentJButton btnSettings = new TransparentJButton("Settings");
-		btnSettings.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				SettingsFrame settings = new SettingsFrame(musicThread);
-				settings.show();
-				startMenu.setVisible(false);
-				// Thread to control multiwindow switching between menu and
-				// settings
-				Thread settingsListener = new Thread(new Runnable() {
-					public void run() {
-						while (!settings.isFinished() && !settings.isCancel()) {
-							System.out.println("Modding Settings");
-						}
-
-						if (settings.isFinished()) {
-							soundConfig.replace("Volume", (int) settings.getVolume());
-							printConfigs();
-							musicThread.setSoundConfig(soundConfig);
-						} else {
-							musicThread.getPlayer().changeVolume(soundConfig.get("Volume") / 10.0);
-						}
-
-						settings.dispose();
-						startMenu.setVisible(true);
-					}
-				});
-				settingsListener.start();
-			}
-		});
-		btnSettings.setBorderPainted(false);
-		btnSettings.setOpaque(false);
-		btnSettings.setForeground(Color.BLACK);
-		btnSettings.setBackground(new Color(btnSettings.getBackground().getRed(), btnSettings.getBackground().getBlue(),
-				btnSettings.getBackground().getGreen(), opacity));
-		btnSettings.setBounds(309, 228, 141, 35);
+		// TransparentJButton btnSettings = new TransparentJButton("Settings");
+		// btnSettings.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent arg0) {
+		// SettingsFrame settings = new SettingsFrame(clip);
+		// settings.show();
+		// startMenu.setVisible(false);
+		// // Thread to control multiwindow switching between menu and
+		// // settings
+		// Thread settingsListener = new Thread(new Runnable() {
+		// public void run() {
+		// while (!settings.isFinished() && !settings.isCancel()) {
+		// System.out.println("Modding Settings");
+		// }
+		//
+		// if (settings.isFinished()) {
+		// soundConfig.replace("Volume", (int) settings.getVolume());
+		// printConfigs();
+		// musicThread.setSoundConfig(soundConfig);
+		// } else {
+		// musicThread.getPlayer().changeVolume(soundConfig.get("Volume") /
+		// 10.0);
+		// }
+		//
+		// settings.dispose();
+		// startMenu.setVisible(true);
+		// }
+		// });
+		// settingsListener.start();
+		// }
+		// });
+		// btnSettings.setBorderPainted(false);
+		// btnSettings.setOpaque(false);
+		// btnSettings.setForeground(Color.BLACK);
+		// btnSettings.setBackground(new
+		// Color(btnSettings.getBackground().getRed(),
+		// btnSettings.getBackground().getBlue(),
+		// btnSettings.getBackground().getGreen(), opacity));
+		// btnSettings.setBounds(309, 228, 141, 35);
 		// contentPane.add(btnSettings);
 
 		// Exit button and properties

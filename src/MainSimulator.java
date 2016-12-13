@@ -120,10 +120,10 @@ public class MainSimulator extends PApplet {
 		super();
 	}
 
-	public void run(HashMap<String, String> conMap, Account userAcnt, MusicThread soundThread) {
+	public void run(HashMap<String, String> conMap, Account userAcnt, Clip menuMusic) {
 		this.conMap = conMap;
 		this.userAcc = userAcnt;
-		soundThread.getPlayer().stop();// Pauses the soundtrack from the main
+		menuMusic.stop();// Pauses the soundtrack from the main
 										// menu
 		playing = true;// Control variable for the multiwindow threading
 		saving = false;
@@ -131,13 +131,6 @@ public class MainSimulator extends PApplet {
 		gameFrame = new JFrame("Main Game");
 		gameFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		// Custom closing function to allow transition back to main menu
-		gameFrame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent arg0) {
-				playing = false;
-				System.out.println("Playing false");
-			}
-		});
 
 		// create your sketch
 		MainSimulator pt = new MainSimulator();
@@ -223,6 +216,13 @@ public class MainSimulator extends PApplet {
 
 		// start your sketch
 		ps.startThread();
+		gameFrame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				playing = false;
+				System.out.println("Playing false");
+			}
+		});
 	}
 
 	public static void main(String[] args) {
@@ -380,8 +380,31 @@ public class MainSimulator extends PApplet {
     }
 
 	public void draw() {
+		closedCheck();
         background(128, 0, 128);
 		weeklyRun();
+	}
+	
+	public void closedCheck(){
+		File stopCheck = new File("Stop.txt");
+		if(stopCheck.exists()){
+			try {
+				Scanner inFile = new Scanner(stopCheck);
+				boolean stop = inFile.nextBoolean();
+				inFile.close();
+				if(stop){
+					System.out.println("Stop: " + stop);
+					clip.stop();
+				}
+				Files.deleteIfExists(stopCheck.toPath());
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 
@@ -409,11 +432,12 @@ public class MainSimulator extends PApplet {
 
 	public synchronized boolean isSchoolOver() {
 		File tempEnd = new File("TempEnd.txt");
-		if (week > 15) {
+		if (week > 15) {  
 			try {
 				PrintWriter writer = new PrintWriter(new FileWriter(tempEnd));
 				writer.write("true");
 				writer.close();
+				clip.stop();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -566,7 +590,7 @@ public class MainSimulator extends PApplet {
 				clip.stop();
 			clip = AudioSystem.getClip();
 			AudioInputStream inputStream;
-			inputStream = AudioSystem.getAudioInputStream(new File(song));
+			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResource(song));
 			clip.open(inputStream);
 			clip.start();
 			clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -775,6 +799,7 @@ public class MainSimulator extends PApplet {
 			}
 		}
 		gameFrame.setVisible(false);
+		
 		boolean gameComplete = false;
 		try {
 			Scanner inFile = new Scanner(new File("TempEnd.txt"));
