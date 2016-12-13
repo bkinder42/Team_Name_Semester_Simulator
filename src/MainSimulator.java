@@ -468,11 +468,11 @@ public class MainSimulator extends PApplet {
         text("Final Happiness: " + happySum, 500, 300);
         text("Final Grades: " + gradeSum, 500, 400);
         text("Final Wealth: " + wealthTotal, 500, 350);
-//        workHoursField.clear();
-//        academicVisitField.clear();
-//        studyTimeField.clear();
-//        partyTimeField.clear();
-//        classTimeField.clear();
+        workHoursField.clear();
+        academicVisitField.clear();
+        studyTimeField.clear();
+        partyTimeField.clear();
+        classTimeField.clear();
         JFrame top = new JFrame();
         top.setAlwaysOnTop(true);
         top.setVisible(false);
@@ -759,33 +759,33 @@ public class MainSimulator extends PApplet {
             wealthTotal = 0;
 
         }
-		else if (randomNegativeGenerator() > 20 && randomPositiveGenerator() < 30){
+		else if (randomNegativeGenerator() > 20 && randomPositiveGenerator() < 25){
 			JOptionPane.showMessageDialog(null, "You decide a night of partying would be better than homework. Your happiness has increased, but grade has decreased");
 			happyWeekly += 5;
 			gradeWeekly -= 10;
 			wealthWeekly -= 7;
 
 		}
-		else if (randomNegativeGenerator() > 45 && randomPositiveGenerator() < 35){
+		else if (randomNegativeGenerator() > 36 && randomPositiveGenerator() < 31){
 			JOptionPane.showMessageDialog(null, "You decide to work overtime for a few hours. Your happiness has decreased and wealth has increased");
 			happyWeekly -= 7;
 			wealthWeekly += 25;
 		}
-		else if (randomNegativeGenerator() > 10 && randomPositiveGenerator() < 0){
+		else if (randomNegativeGenerator() > 5 && randomPositiveGenerator() < 0){
 			JOptionPane.showMessageDialog(null, "You get in an argument with a friend. Your happiness has decreased significantly");
 			happyWeekly -=25;
 		}
-		else if (randomPositiveGenerator() > 60 && randomPositiveGenerator() < 65){
+		else if (randomPositiveGenerator() > 61 && randomPositiveGenerator() < 65){
 			JOptionPane.showMessageDialog(null, "A professor offers an easy extra credit assignment. Your grade and happiness have increased slightly.");
 			happyWeekly += 10;
 			gradeWeekly += 15;
 		}
-		else if (randomPositiveGenerator() > 66 && randomPositiveGenerator() < 71){
+		else if (randomPositiveGenerator() > 70 && randomPositiveGenerator() < 75){
 			JOptionPane.showMessageDialog(null, "You binge Game of Thrones and fall asleep to the beautiful sound of Kit Harrington's voice...without working on your Comp101 project.");
 			happyWeekly += 10;
 			gradeWeekly -= 10;
 		}
-		else if (randomPositiveGenerator() > 80 && randomPositiveGenerator() < 90){
+		else if (randomPositiveGenerator() > 90 && randomPositiveGenerator() < 95){
 			JOptionPane.showMessageDialog(null, "You stay up very late, getting a lot of studying done. Your happiness has decreased, but grade has increased significantly");
 			happyWeekly -= 7;
 			gradeWeekly += 20;
