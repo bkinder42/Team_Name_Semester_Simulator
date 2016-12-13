@@ -53,7 +53,7 @@ public class SQLCmdLine extends JPanel {
 		infoFrame.setVisible(false);
 		Thread mouseLoc = new Thread(new Runnable() {
 			public void run() {
-				while (true) {
+				while (true) { 
 					System.out.println("Mouse Loc:(" + MouseInfo.getPointerInfo().getLocation().x + ","
 							+ MouseInfo.getPointerInfo().getLocation().y + ")");
 					if (infoFrame.isVisible()) {
@@ -64,7 +64,7 @@ public class SQLCmdLine extends JPanel {
 				}
 			}
 		});
-		mouseLoc.start();
+		mouseLoc.start(); 
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
 			@Override
 			public boolean dispatchKeyEvent(KeyEvent e) {
